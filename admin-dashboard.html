@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Yetay 3.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Open Sans', sans-serif; background-color: #f3f4f6; }
+        h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* RBAC Visibility Classes */
+        .sp-admin-view { display: none; }
+        .reg-admin-view { display: none; }
+    </style>
+</head>
+<body class="pt-16 md:pt-20 flex flex-col min-h-screen">
+
+    <nav class="bg-gray-900 shadow-md fixed w-full z-50 top-0 h-16 md:h-20 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full w-full">
+                <div class="flex items-center flex-shrink-0">
+                    <img src="logo.png" alt="Yetay Logo" class="h-8 md:h-10 w-auto bg-white rounded p-1 mr-2 md:mr-3" onerror="this.style.display='none'">
+                    <span class="font-heading font-bold text-sm md:text-xl text-yellow-400">YETAY <span class="hidden sm:inline">WORKSPACE</span></span>
+                </div>
+                <div class="flex items-center space-x-3 md:space-x-4">
+                    <a href="index.html" class="text-xs md:text-sm font-semibold text-gray-300 hover:text-white whitespace-nowrap">
+                        &larr; <span class="md:hidden">Website</span><span class="hidden md:inline">Main Website</span>
+                    </a>
+                    <a href="login.html" onclick="localStorage.clear()" class="bg-red-600 text-white px-3 py-1.5 md:px-4 md:py-2 rounded shadow hover:bg-red-700 transition font-bold text-xs md:text-sm">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
+            <div class="flex space-x-4 md:space-x-6 py-3">
+                <button onclick="openTab('tab-dashboard')" id="btn-tab-dashboard" class="portal-tab text-sm md:text-base text-blue-900 font-bold border-b-2 border-yellow-500 px-2 pb-1">My Dashboard</button>
+                <button onclick="openTab('tab-registrations')" id="btn-tab-registrations" class="portal-tab text-sm md:text-base text-gray-500 hover:text-blue-900 font-semibold px-2 pb-1">CRM</button>
+                <button onclick="openTab('tab-maincbt')" id="btn-tab-maincbt" class="portal-tab text-sm md:text-base text-gray-500 hover:text-blue-900 font-semibold px-2 pb-1">Main CBT Config</button>
+                <button onclick="openTab('tab-pastquestions')" id="btn-tab-pastquestions" class="portal-tab text-sm md:text-base text-gray-500 hover:text-blue-900 font-semibold px-2 pb-1">Past Qs</button>
+                <button onclick="openTab('tab-tasks')" id="btn-tab-tasks" class="portal-tab text-sm md:text-base text-gray-500 hover:text-blue-900 font-semibold px-2 pb-1">Task Manager</button>
+                <button onclick="openTab('tab-leaderboard')" id="btn-tab-leaderboard" class="portal-tab text-sm md:text-base text-gray-500 hover:text-blue-900 font-semibold px-2 pb-1">Leaderboard</button>
+                <button onclick="openTab('tab-controlroom')" id="btn-tab-controlroom" class="portal-tab text-sm md:text-base text-red-600 hover:text-red-800 font-bold px-2 pb-1 sp-admin-view">Control Room</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-6 md:py-8">
+        
+        <div class="bg-white rounded-lg shadow-sm border-l-4 border-yellow-500 p-4 md:p-6 mb-6 md:mb-8 flex flex-col md:flex-row justify-between md:items-center gap-4">
+            <div>
+                <h1 class="text-lg md:text-2xl font-bold text-gray-900" id="adminWelcomeName">Welcome, Admin</h1>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <span id="adminRoleBadge" class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-[10px] md:text-xs font-bold uppercase">Role Loading...</span>
+                    <span id="adminTeamBadge" class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-[10px] md:text-xs font-bold uppercase">Team Loading...</span>
+                    <span class="sp-admin-view bg-red-100 text-red-800 px-2 py-1 rounded text-[10px] md:text-xs font-bold uppercase">SUPER ADMIN</span>
+                </div>
+            </div>
+            <div class="text-left md:text-right border-t md:border-t-0 pt-3 md:pt-0 border-gray-100 w-full md:w-auto">
+                <p class="text-[10px] md:text-xs text-gray-500 uppercase font-bold">Admin Points</p>
+                <p class="text-xl md:text-2xl font-bold text-blue-900">3,450</p>
+            </div>
+        </div>
+
+        <div id="tab-dashboard" class="tab-content active">
+            <h2 class="text-base md:text-lg font-bold text-gray-800 mb-3 md:mb-4">Task Performance Metrics</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8 md:mb-10">
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-100 text-center cursor-pointer hover:shadow-md transition">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Allocated Tasks</p>
+                    <p class="text-xl md:text-3xl font-bold text-blue-900">15</p>
+                </div>
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-100 text-center cursor-pointer hover:shadow-md transition border-b-4 border-green-500">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Completed</p>
+                    <p class="text-xl md:text-3xl font-bold text-green-600">10</p>
+                </div>
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-100 text-center cursor-pointer hover:shadow-md transition border-b-4 border-yellow-500">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Ongoing</p>
+                    <p class="text-xl md:text-3xl font-bold text-yellow-600">3 <span class="text-xs md:text-sm font-normal text-gray-400">(60%)</span></p>
+                </div>
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-100 text-center cursor-pointer hover:shadow-md transition border-b-4 border-red-500">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Undone</p>
+                    <p class="text-xl md:text-3xl font-bold text-red-600">2</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-registrations" class="tab-content">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+                <div class="bg-blue-900 p-3 md:p-4 rounded-lg shadow-md text-center cursor-pointer hover:bg-blue-800 transition text-white">
+                    <p class="text-[10px] md:text-xs text-blue-200 font-bold uppercase mb-1">Total Churches</p>
+                    <p class="text-xl md:text-3xl font-bold">24</p>
+                </div>
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border text-center cursor-pointer hover:border-yellow-500 transition">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Junior (Reg)</p>
+                    <p class="text-xl md:text-2xl font-bold text-gray-800">18</p>
+                </div>
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border text-center cursor-pointer hover:border-green-500 transition">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Inter (Reg)</p>
+                    <p class="text-xl md:text-2xl font-bold text-gray-800">21</p>
+                </div>
+                <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border text-center cursor-pointer hover:border-red-500 transition">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Senior (Reg)</p>
+                    <p class="text-xl md:text-2xl font-bold text-gray-800">15</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm border overflow-x-auto">
+                <div class="p-4 border-b bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <h3 class="font-bold text-gray-800">Church Registry</h3>
+                    <input type="text" placeholder="Search churches..." class="w-full sm:w-auto border rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-900">
+                </div>
+                <table class="w-full text-left text-xs md:text-sm whitespace-nowrap md:whitespace-normal">
+                    <thead class="text-gray-500 uppercase text-[10px] md:text-xs">
+                        <tr>
+                            <th class="p-3 md:p-4">Church Name</th>
+                            <th class="p-3 md:p-4">Contact</th>
+                            <th class="p-3 md:p-4">Categories</th>
+                            <th class="p-3 md:p-4">Participants</th>
+                            <th class="p-3 md:p-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        <tr class="border-t hover:bg-gray-50">
+                            <td class="p-3 md:p-4 font-bold text-blue-900">Salvation Ministries</td>
+                            <td class="p-3 md:p-4">08012345678</td>
+                            <td class="p-3 md:p-4">
+                                <span class="text-[9px] md:text-[10px] bg-gray-200 px-1 rounded mr-1">JNR</span>
+                                <span class="text-[9px] md:text-[10px] bg-gray-200 px-1 rounded mr-1">INT</span>
+                                <span class="text-[9px] md:text-[10px] bg-gray-200 px-1 rounded">SNR</span>
+                            </td>
+                            <td class="p-3 md:p-4"><span class="text-green-600 font-semibold">Provided (6)</span></td>
+                            <td class="p-3 md:p-4"><button class="text-blue-600 hover:underline font-semibold">View Details</button></td>
+                        </tr>
+                        <tr class="border-t hover:bg-gray-50">
+                            <td class="p-3 md:p-4 font-bold text-blue-900">RCCG Glory Parish</td>
+                            <td class="p-3 md:p-4">08198765432</td>
+                            <td class="p-3 md:p-4">
+                                <span class="text-[9px] md:text-[10px] bg-gray-200 px-1 rounded mr-1">INT</span>
+                                <span class="text-[9px] md:text-[10px] bg-gray-200 px-1 rounded">SNR</span>
+                            </td>
+                            <td class="p-3 md:p-4"><span class="text-yellow-600 font-semibold">Awaiting</span></td>
+                            <td class="p-3 md:p-4"><button class="text-blue-600 hover:underline font-semibold">View Details</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-maincbt" class="tab-content">
+            
+            <div class="sp-admin-view">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 md:mb-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-800">Main CBT Configuration</h2>
+                    <span class="bg-gray-200 text-gray-700 font-bold px-3 py-1 rounded text-xs md:text-sm">Status: Pre-Exam</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+                    <div class="bg-white p-5 md:p-6 rounded-lg shadow-sm border border-blue-200 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-blue-900 mb-2">Junior Category Bank</h3>
+                            <p class="text-[10px] md:text-xs font-bold text-gray-500">Drafted Questions: <span class="text-blue-600">0 / 50</span></p>
+                        </div>
+                        <button class="mt-4 w-full border border-blue-900 text-blue-900 text-sm md:text-base font-bold py-2 rounded hover:bg-blue-50 transition">Manage Bank</button>
+                    </div>
+                    <div class="bg-white p-5 md:p-6 rounded-lg shadow-sm border border-blue-200 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-blue-900 mb-2">Intermediate Category Bank</h3>
+                            <p class="text-[10px] md:text-xs font-bold text-gray-500">Drafted Questions: <span class="text-blue-600">0 / 50</span></p>
+                        </div>
+                        <button class="mt-4 w-full border border-blue-900 text-blue-900 text-sm md:text-base font-bold py-2 rounded hover:bg-blue-50 transition">Manage Bank</button>
+                    </div>
+                    <div class="bg-white p-5 md:p-6 rounded-lg shadow-sm border border-blue-200 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-blue-900 mb-2">Senior Category Bank</h3>
+                            <p class="text-[10px] md:text-xs font-bold text-gray-500">Drafted Questions: <span class="text-blue-600">0 / 50</span></p>
+                        </div>
+                        <button class="mt-4 w-full border border-blue-900 text-blue-900 text-sm md:text-base font-bold py-2 rounded hover:bg-blue-50 transition">Manage Bank</button>
+                    </div>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 text-center">
+                    <p class="text-sm text-blue-800 font-semibold">Note: Global Activation is managed in the Control Room.</p>
+                </div>
+            </div>
+
+            <div class="reg-admin-view">
+                <h2 class="text-xl md:text-2xl font-bold text-blue-900 mb-4 md:mb-6 text-center">Yetay 3.0 Main CBT Examination</h2>
+                <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden text-center mx-2 md:mx-auto">
+                    <div class="bg-blue-900 p-6 md:p-8 text-white">
+                        <svg class="w-16 h-16 md:w-20 md:h-20 mx-auto text-yellow-400 mb-3 md:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <h3 class="text-2xl md:text-3xl font-bold font-heading">EXAM LOCKED</h3>
+                        <p class="mt-1 md:mt-2 text-blue-200 font-semibold text-sm md:text-lg">The Main CBT will be live on the D-Day.</p>
+                    </div>
+                    <div class="p-6 md:p-8">
+                        <p class="text-sm md:text-base text-gray-600 mb-4 md:mb-6">This section will automatically unlock and load the main competition questions on the scheduled examination day.</p>
+                        <div class="inline-block bg-gray-100 border border-gray-300 rounded px-4 py-2 md:px-6 md:py-3">
+                            <span class="text-xs md:text-sm font-bold text-gray-500 uppercase tracking-widest">Status:</span>
+                            <span class="ml-2 text-red-600 font-bold text-xs md:text-sm">Awaiting Activation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-pastquestions" class="tab-content">
+            
+            <div class="sp-admin-view">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 md:mb-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-800">Archive Manager</h2>
+                    <button class="w-full sm:w-auto bg-yellow-500 text-blue-900 font-bold px-4 py-2 rounded shadow hover:bg-yellow-400 transition text-sm md:text-base">+ Upload Resource</button>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border overflow-x-auto">
+                    <table class="w-full text-left text-xs md:text-sm whitespace-nowrap md:whitespace-normal">
+                        <thead class="bg-gray-50 text-gray-600">
+                            <tr>
+                                <th class="p-3 md:p-4 font-semibold">Edition</th>
+                                <th class="p-3 md:p-4 font-semibold">Category & Subject</th>
+                                <th class="p-3 md:p-4 font-semibold text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t hover:bg-gray-50">
+                                <td class="p-3 md:p-4 font-bold text-gray-800">Yetay 2.0</td>
+                                <td class="p-3 md:p-4 text-gray-600">Junior - Genesis & Mark</td>
+                                <td class="p-3 md:p-4 text-right space-x-2">
+                                    <button class="text-blue-600 hover:underline font-semibold">Edit</button>
+                                    <button class="text-red-500 hover:underline font-semibold">Delete</button>
+                                </td>
+                            </tr>
+                            <tr class="border-t hover:bg-gray-50">
+                                <td class="p-3 md:p-4 font-bold text-gray-800">Yetay 1.0</td>
+                                <td class="p-3 md:p-4 text-gray-600">Senior - Acts of the Apostles</td>
+                                <td class="p-3 md:p-4 text-right space-x-2">
+                                    <button class="text-blue-600 hover:underline font-semibold">Edit</button>
+                                    <button class="text-red-500 hover:underline font-semibold">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="reg-admin-view">
+                <h2 class="text-lg md:text-xl font-bold text-blue-900 mb-4 md:mb-6">Detailed Archive Vault</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div class="bg-white p-5 md:p-6 rounded-lg shadow-sm border">
+                        <div class="flex justify-between items-start mb-3 md:mb-4">
+                            <span class="bg-blue-100 text-blue-800 text-[10px] md:text-xs font-bold px-2 py-1 rounded uppercase">Yetay 2.0</span>
+                            <span class="text-gray-400 text-xs md:text-sm">Junior</span>
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-base md:text-lg mb-2">Genesis & Mark Detailed Scope</h3>
+                        <p class="text-xs md:text-sm text-gray-600 mb-4">Contains over 150 tie-breaker questions and standard CBBT questions from the Yetay 2.0 finals.</p>
+                        <button class="w-full sm:w-auto text-blue-900 font-semibold hover:text-yellow-500 text-sm border border-blue-900 px-4 py-2 rounded transition">Download Resource</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-tasks" class="tab-content">
+            <div class="flex justify-between items-center mb-4 md:mb-6">
+                <h2 class="text-lg md:text-xl font-bold text-gray-800">My Task Board</h2>
+                <div class="bg-blue-100 text-blue-900 px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold shadow-sm text-xs md:text-sm">Pts: 3,450</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                <div class="bg-gray-50 p-3 md:p-4 rounded-lg border">
+                    <h3 class="font-bold text-red-600 mb-3 md:mb-4 border-b-2 border-red-200 pb-2 text-sm md:text-base">Undone (2)</h3>
+                    <div class="bg-white p-3 md:p-4 rounded shadow-sm border border-l-4 border-l-red-500 mb-3 cursor-pointer">
+                        <p class="font-bold text-gray-800 mb-1 text-sm md:text-base">Draft Opening Speech</p>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-2">Due: 25 July</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-[10px] md:text-xs font-bold text-blue-600">150 Pts</span>
+                            <span class="text-[10px] md:text-xs bg-gray-200 px-2 py-1 rounded">Gen Sec</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-3 md:p-4 rounded-lg border">
+                    <h3 class="font-bold text-yellow-600 mb-3 md:mb-4 border-b-2 border-yellow-200 pb-2 text-sm md:text-base">Ongoing (3)</h3>
+                    <div class="bg-white p-3 md:p-4 rounded shadow-sm border border-l-4 border-l-yellow-500 mb-3 cursor-pointer">
+                        <p class="font-bold text-gray-800 mb-1 text-sm md:text-base">Venue Coordination Setup</p>
+                        <div class="w-full bg-gray-200 rounded-full h-1 md:h-1.5 mb-2 mt-2">
+                            <div class="bg-yellow-400 h-1 md:h-1.5 rounded-full" style="width: 60%"></div>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-[10px] md:text-xs font-bold text-blue-600">300 Pts</span>
+                            <span class="text-[10px] md:text-xs bg-gray-200 px-2 py-1 rounded">ANCHOR</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-3 md:p-4 rounded-lg border">
+                    <h3 class="font-bold text-green-600 mb-3 md:mb-4 border-b-2 border-green-200 pb-2 text-sm md:text-base">Completed (10)</h3>
+                    <div class="bg-white p-3 md:p-4 rounded shadow-sm border border-l-4 border-l-green-500 opacity-75 mb-3">
+                        <p class="font-bold text-gray-800 line-through text-sm md:text-base">Compile Syllabus PDF</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-[10px] md:text-xs font-bold text-green-600">+100 Pts (Earned)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-leaderboard" class="tab-content">
+            <div class="text-center mb-6 md:mb-8">
+                <h2 class="text-xl md:text-2xl font-bold text-blue-900">Yetay Admin Rankings</h2>
+                <p class="text-gray-500 text-xs md:text-sm mt-1">Recognizing dedication and execution in the vineyard.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm border overflow-x-auto">
+                <table class="w-full text-left text-xs md:text-sm whitespace-nowrap md:whitespace-normal">
+                    <thead class="bg-blue-900 text-white">
+                        <tr>
+                            <th class="p-3 md:p-4 font-bold text-center w-12 md:w-16">Rank</th>
+                            <th class="p-3 md:p-4 font-bold">Admin Name</th>
+                            <th class="p-3 md:p-4 font-bold hidden sm:table-cell">Role / Team</th>
+                            <th class="p-3 md:p-4 font-bold text-right">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t bg-yellow-50">
+                            <td class="p-3 md:p-4 font-bold text-center text-yellow-600 text-base md:text-xl">1</td>
+                            <td class="p-3 md:p-4 font-bold text-gray-800">
+                                Elijah Godswill 
+                                <span class="ml-1 md:ml-2 text-[9px] md:text-xs bg-yellow-200 text-yellow-800 px-1 rounded">(You)</span>
+                                <div class="sm:hidden text-[10px] text-gray-500 font-normal mt-1">Gen. Secretary / ANCHOR</div>
+                            </td>
+                            <td class="p-3 md:p-4 text-gray-600 hidden sm:table-cell">Gen. Secretary / ANCHOR</td>
+                            <td class="p-3 md:p-4 font-bold text-blue-900 text-right text-base md:text-lg">3,450</td>
+                        </tr>
+                        <tr class="border-t hover:bg-gray-50">
+                            <td class="p-3 md:p-4 font-bold text-center text-gray-500 text-sm md:text-lg">2</td>
+                            <td class="p-3 md:p-4 font-semibold text-gray-800">
+                                Oladapo Olaogbebikan
+                                <div class="sm:hidden text-[10px] text-gray-500 font-normal mt-1">Event Coordinator</div>
+                            </td>
+                            <td class="p-3 md:p-4 text-gray-600 hidden sm:table-cell">Event Coordinator</td>
+                            <td class="p-3 md:p-4 font-bold text-blue-900 text-right">3,200</td>
+                        </tr>
+                        <tr class="border-t hover:bg-gray-50">
+                            <td class="p-3 md:p-4 font-bold text-center text-yellow-700 text-sm md:text-lg">3</td>
+                            <td class="p-3 md:p-4 font-semibold text-gray-800">
+                                Sarah Johnson
+                                <div class="sm:hidden text-[10px] text-gray-500 font-normal mt-1">HOD, Quest Board</div>
+                            </td>
+                            <td class="p-3 md:p-4 text-gray-600 hidden sm:table-cell">HOD, Quest Board</td>
+                            <td class="p-3 md:p-4 font-bold text-blue-900 text-right">2,850</td>
+                        </tr>
+                        <tr class="border-t hover:bg-gray-50 opacity-75">
+                            <td class="p-3 md:p-4 font-bold text-center text-gray-400 text-sm md:text-lg">4</td>
+                            <td class="p-3 md:p-4 font-semibold text-gray-800">
+                                Michael David
+                                <div class="sm:hidden text-[10px] text-gray-500 font-normal mt-1">Member, SPARK Media</div>
+                            </td>
+                            <td class="p-3 md:p-4 text-gray-600 hidden sm:table-cell">Member, SPARK Media</td>
+                            <td class="p-3 md:p-4 font-bold text-blue-900 text-right">1,900</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-controlroom" class="tab-content sp-admin-view">
+            <div class="mb-6 border-b-2 border-red-600 pb-4">
+                <h2 class="text-2xl md:text-3xl font-bold text-red-600 flex items-center">
+                    <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    SYSTEM CONTROL ROOM
+                </h2>
+                <p class="text-gray-600 mt-2 text-sm">Critical system toggles. Changes here reflect immediately across all church portals.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="font-bold text-gray-800 text-lg mb-4 border-b pb-2">Assessment & Exam Triggers</h3>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <p class="font-bold text-blue-900">Main CBT Examination</p>
+                            <p class="text-xs text-gray-500">Unlocks the live exam for all users.</p>
+                        </div>
+                        <button class="bg-gray-200 text-gray-600 font-bold px-4 py-2 rounded text-sm hover:bg-red-600 hover:text-white transition">GO LIVE</button>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-blue-900">Pre-Qualifier Assessment</p>
+                            <p class="text-xs text-gray-500">Toggle visibility of the monthly test.</p>
+                        </div>
+                        <button class="bg-green-600 text-white font-bold px-4 py-2 rounded text-sm">ACTIVE</button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="font-bold text-gray-800 text-lg mb-4 border-b pb-2">Portal Access Controls</h3>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <p class="font-bold text-blue-900">Participant Input Portal</p>
+                            <p class="text-xs text-gray-500">Allow churches to upload participant names.</p>
+                        </div>
+                        <button class="bg-gray-200 text-gray-600 font-bold px-4 py-2 rounded text-sm hover:bg-green-600 hover:text-white transition">UNLOCK</button>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-blue-900">General Registration Link</p>
+                            <p class="text-xs text-gray-500">Open or close Yetay 3.0 registrations.</p>
+                        </div>
+                        <button class="bg-green-600 text-white font-bold px-4 py-2 rounded text-sm">OPEN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.portal-tab').forEach(el => {
+                if(el.id !== 'btn-tab-controlroom') {
+                    el.classList.remove('text-blue-900', 'border-b-2', 'border-yellow-500');
+                    el.classList.add('text-gray-500');
+                } else {
+                    el.classList.remove('border-b-2', 'border-red-600');
+                }
+            });
+            document.getElementById(tabId).classList.add('active');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if(tabId === 'tab-controlroom') {
+                activeBtn.classList.add('border-b-2', 'border-red-600');
+            } else {
+                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('text-blue-900', 'border-b-2', 'border-yellow-500');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const userId = localStorage.getItem("yetay_session_id");
+            const roleType = localStorage.getItem("yetay_session_role");
+            const adminRole = localStorage.getItem("yetay_admin_role");
+            const adminTeam = localStorage.getItem("yetay_admin_team");
+            
+            if (roleType === "admin") {
+                // Inject real dynamic data from Google Sheets
+                document.getElementById('adminWelcomeName').innerText = "Welcome, " + userId;
+                document.getElementById('adminRoleBadge').innerText = adminRole;
+                document.getElementById('adminTeamBadge').innerText = adminTeam;
+
+                if (userId === "SP-ADMIN") {
+                    document.querySelectorAll('.sp-admin-view').forEach(el => el.style.display = 'block');
+                    document.querySelectorAll('.reg-admin-view').forEach(el => el.style.display = 'none');
+                    document.querySelectorAll('span.sp-admin-view').forEach(el => el.style.display = 'inline-block');
+                } else {
+                    document.querySelectorAll('.reg-admin-view').forEach(el => el.style.display = 'block');
+                    document.querySelectorAll('.sp-admin-view').forEach(el => el.style.display = 'none');
+                }
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+    </script>
+</body>
+</html>

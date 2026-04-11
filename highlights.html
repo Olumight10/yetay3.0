@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highlights | Yetay 3.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Open Sans', sans-serif; }
+        h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
+        .hidden-section { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 pt-20 flex flex-col min-h-screen">
+
+    <nav class="bg-white shadow-md fixed w-full z-50 top-0 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full w-full">
+                
+                <div class="flex items-center flex-shrink-0 max-w-[70%]">
+                    <img src="logo.png" alt="Yetay Logo" class="h-10 w-auto object-contain mr-3" onerror="this.style.display='none'">
+                    <span class="font-heading font-bold text-xl text-blue-900 truncate">YETAY</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-blue-900 transition">Home</a>
+                    <a href="about.html" class="text-gray-600 hover:text-blue-900 transition">About</a>
+                    <a href="highlights.html" class="text-blue-900 font-semibold border-b-2 border-yellow-500">Highlights</a>
+                    <a href="editions.html" class="text-gray-600 hover:text-blue-900 transition">Editions</a>
+                    <a href="yetay3.html" class="text-gray-600 hover:text-blue-900 transition">Yetay 3.0</a>
+                    <a href="register.html" class="text-gray-600 hover:text-blue-900 transition">Registration</a>
+                    <a href="login.html" class="bg-blue-900 text-white px-5 py-2 rounded shadow-md hover:bg-blue-800 transition font-semibold tracking-wide uppercase text-sm">Login</a>
+                </div>
+
+                <div class="flex items-center md:hidden flex-shrink-0">
+                    <button id="mobile-menu-btn" class="text-blue-900 hover:text-yellow-500 focus:outline-none p-2 rounded-md">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200 shadow-2xl absolute w-full left-0 top-20">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="index.html" class="block px-3 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">Home</a>
+                <a href="about.html" class="block px-3 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">About</a>
+                <a href="highlights.html" class="block px-3 py-3 text-blue-900 font-semibold border-l-4 border-yellow-500 bg-blue-50">Highlights</a>
+                <a href="editions.html" class="block px-3 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">Editions</a>
+                <a href="yetay3.html" class="block px-3 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">Yetay 3.0</a>
+                <a href="register.html" class="block px-3 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition">Registration</a>
+                <a href="login.html" class="block px-3 py-3 mt-4 bg-blue-900 text-white text-center rounded shadow font-semibold">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="max-w-7xl mx-auto px-4 py-8 w-full mt-6">
+        <div class="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded shadow border border-gray-100">
+            <div class="mb-4 md:mb-0">
+                <label for="editionFilter" class="font-semibold text-blue-900 mr-2">Filter by Edition:</label>
+                <select id="editionFilter" class="border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-900 bg-gray-50">
+                    <option value="all">All Editions</option>
+                    <option value="yetay2">Yetay 2.0</option>
+                    <option value="yetay1">Yetay 1.0</option>
+                </select>
+            </div>
+            
+            <div class="flex space-x-2 bg-gray-200 p-1 rounded-lg">
+                <button id="btn-moments" class="px-6 py-2 bg-white text-blue-900 shadow rounded font-bold transition">Moments</button>
+                <button id="btn-gallery" class="px-6 py-2 text-gray-600 hover:text-blue-900 rounded font-bold transition">Gallery</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="section-moments" class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+        <h2 class="text-3xl font-bold text-blue-900 mb-6 border-l-4 border-yellow-500 pl-4">Crucial Moments</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                <img src="MAK_7502.jpg" alt="Moment" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <span class="text-xs font-bold text-yellow-600 uppercase tracking-wide">Yetay 2.0</span>
+                    <p class="text-gray-700 mt-2 font-semibold">The intense final tie-breaker round in the Senior Category.</p>
+                </div>
+            </div>
+             <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                <img src="MAK_7490.jpg" alt="Moment" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <span class="text-xs font-bold text-yellow-600 uppercase tracking-wide">Yetay 1.0</span>
+                    <p class="text-gray-700 mt-2 font-semibold">Tears of joy during the grand prize presentation.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                <img src="MAK_7404.jpg" alt="Moment" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <span class="text-xs font-bold text-yellow-600 uppercase tracking-wide">Yetay 2.0</span>
+                    <p class="text-gray-700 mt-2 font-semibold">Intense concentration and prayers during the assessments.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-10 flex justify-center space-x-2">
+            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 font-semibold">Prev</button>
+            <button class="px-4 py-2 bg-blue-900 text-white rounded font-bold shadow">1</button>
+            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 font-semibold">2</button>
+            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 font-semibold">Next</button>
+        </div>
+    </section>
+
+    <section id="section-gallery" class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full hidden-section">
+        <h2 class="text-3xl font-bold text-blue-900 mb-6 border-l-4 border-yellow-500 pl-4">Photo Gallery</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <img src="MAK_7177.jpg" alt="Gallery" class="rounded shadow w-full h-48 md:h-64 object-cover">
+            <img src="MAK_7180.jpg" alt="Gallery" class="rounded shadow w-full h-48 md:h-64 object-cover">
+            <img src="MAK_7368.jpg" alt="Gallery" class="rounded shadow w-full h-48 md:h-64 object-cover">
+            <img src="MAK_7372.jpg" alt="Gallery" class="rounded shadow w-full h-48 md:h-64 object-cover">
+            <img src="MAK_7385.jpg" alt="Gallery" class="rounded shadow w-full h-48 md:h-64 object-cover">
+            <img src="MAK_7257.jpg" alt="Gallery" class="rounded shadow w-full h-48 md:h-64 object-cover">
+            <img src="MAK_7404.jpg" alt="Gallery" class="rounded shadow w-full h-48 md:h-64 object-cover">
+            <img src="MAK_7500.jpg" alt="Gallery" class="rounded shadow w-full h-48 md:h-64 object-cover">
+        </div>
+        
+        <div class="mt-10 flex justify-center space-x-2">
+            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 font-semibold">Prev</button>
+            <button class="px-4 py-2 bg-blue-900 text-white rounded font-bold shadow">1</button>
+            <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 font-semibold">Next</button>
+        </div>
+    </section>
+
+    <footer class="bg-blue-900 text-white py-8 mt-auto w-full">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400 text-sm">&copy; 2026 Banner Unto Nations Foundation. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- MOBILE MENU LOGIC ---
+        const btnMenu = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        
+        btnMenu.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close menu if clicking outside
+        document.addEventListener('click', (event) => {
+            if (!menu.contains(event.target) && !btnMenu.contains(event.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // --- MOMENTS/GALLERY TOGGLE LOGIC ---
+        const btnMoments = document.getElementById('btn-moments');
+        const btnGallery = document.getElementById('btn-gallery');
+        const secMoments = document.getElementById('section-moments');
+        const secGallery = document.getElementById('section-gallery');
+
+        btnMoments.addEventListener('click', () => {
+            secMoments.classList.remove('hidden-section');
+            secGallery.classList.add('hidden-section');
+            // Active styling
+            btnMoments.classList.add('bg-white', 'text-blue-900', 'shadow');
+            btnMoments.classList.remove('text-gray-600');
+            btnGallery.classList.remove('bg-white', 'text-blue-900', 'shadow');
+            btnGallery.classList.add('text-gray-600');
+        });
+
+        btnGallery.addEventListener('click', () => {
+            secGallery.classList.remove('hidden-section');
+            secMoments.classList.add('hidden-section');
+            // Active styling
+            btnGallery.classList.add('bg-white', 'text-blue-900', 'shadow');
+            btnGallery.classList.remove('text-gray-600');
+            btnMoments.classList.remove('bg-white', 'text-blue-900', 'shadow');
+            btnMoments.classList.add('text-gray-600');
+        });
+    </script>
+</body>
+</html>

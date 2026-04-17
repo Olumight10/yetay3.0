@@ -265,14 +265,23 @@
                             timerProgressBar: true
                         });
                         
-                        setTimeout(() => {
-                            // Grab the church name, encode it, and route to the letter generator
-                            const churchNameInput = document.getElementById('churchName').value;
-                            const encodedChurchName = encodeURIComponent(churchNameInput);
-                            
-                            // Now result.password works perfectly!
-                            window.location.href = `letter.html?church=${encodedChurchName}&pwd=${result.password}`; 
-                        }, 2500);
+                    // Replace your existing setTimeout block in register.html with this:
+                    setTimeout(() => {
+                        // Grab all the inputs
+                        const churchNameInput = document.getElementById('churchName').value;
+                        const lgaInput = document.getElementById('lga').value;
+                        const addresseeNameInput = document.getElementById('addresseeName').value;
+                        const addresseeTitleInput = document.getElementById('addresseeTitle').value;
+
+                        // Encode them for the URL
+                        const encodedChurchName = encodeURIComponent(churchNameInput);
+                        const encodedLga = encodeURIComponent(lgaInput);
+                        const encodedName = encodeURIComponent(addresseeNameInput);
+                        const encodedTitle = encodeURIComponent(addresseeTitleInput);
+                        
+                        // Redirect with ALL data attached instantly
+                        window.location.href = `letter.html?church=${encodedChurchName}&pwd=${result.password}&lga=${encodedLga}&name=${encodedName}&title=${encodedTitle}`; 
+                    }, 2500);
 
                     } else {
                         throw new Error(result.message || "Server rejected submission");

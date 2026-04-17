@@ -11,7 +11,6 @@
         body { font-family: 'Open Sans', sans-serif; background-color: #f3f4f6; }
         h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
         
-        /* A4 Paper Styling for Web View */
         .a4-page {
             width: 210mm;
             height: 297mm;
@@ -27,10 +26,8 @@
         .a4-page p { text-align: justify; margin-bottom: 0.6rem; line-height: 1.4; font-size: 13px; }
         .a4-page h3 { color: #1e3a8a; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 14px; margin-top: 0.8rem; margin-bottom: 0.4rem; }
         
-        /* Force PDF Page Breaks */
         .html2pdf__page-break { page-break-before: always; }
 
-        /* CRITICAL PDF MODE STYLES */
         .pdf-mode { padding: 0 !important; margin: 0 !important; display: block !important; }
         .pdf-mode .a4-page {
             margin: 0 !important;
@@ -42,7 +39,6 @@
         }
         .pdf-mode .no-print { display: none !important; }
 
-        /* OPTIMIZED GUIDELINES SQUEEZE (Relaxed for readability) */
         .page-two-squeeze p { font-size: 11.5px !important; line-height: 1.35 !important; margin-bottom: 0.4rem !important; }
         .page-two-squeeze h3 { font-size: 13px !important; margin-top: 0.6rem !important; margin-bottom: 0.3rem !important; }
         .page-two-squeeze table { margin-top: 0.4rem !important; margin-bottom: 0.4rem !important; table-layout: fixed; width: 100%; }
@@ -114,11 +110,11 @@
                     <div class="space-y-3">
                         <div>
                             <p class="text-xs text-gray-500 font-bold uppercase mb-1">Username (Church Name)</p>
-                            <div class="bg-white px-3 py-2 rounded border border-gray-300 font-bold text-gray-800 break-all" id="displayUsername">Loading...</div>
+                            <div class="bg-white px-3 py-2 rounded border border-gray-300 font-bold text-gray-800 break-all" id="displayUsername">...</div>
                         </div>
                         <div>
                             <p class="text-xs text-gray-500 font-bold uppercase mb-1">Generated Password</p>
-                            <div class="bg-white px-3 py-2 rounded border border-gray-300 font-mono font-bold text-red-600 tracking-wider" id="displayPassword">Loading...</div>
+                            <div class="bg-white px-3 py-2 rounded border border-gray-300 font-mono font-bold text-red-600 tracking-wider" id="displayPassword">...</div>
                         </div>
                     </div>
                     <div class="mt-4 flex items-start bg-white p-3 rounded border border-red-200">
@@ -171,7 +167,7 @@
                 </div>
 
                 <div class="mb-4 text-[13px]">
-                    <p class="font-semibold text-gray-700 mb-1 dynamic-date">Date: Loading...</p>
+                    <p class="font-semibold text-gray-700 mb-1 dynamic-date">Date: ...</p>
                     <p class="leading-snug m-0">
                         <span class="dynamic-title">Coordinator</span><br>
                         <strong class="dynamic-addressee block text-gray-800 my-0.5">Church Representative</strong>
@@ -209,7 +205,7 @@
                     </div>
                 </div>
                 <div class="mt-1 text-[10px] text-gray-500 border-t border-gray-200 pt-1 text-center">
-                    <p class="mb-0 m-0">Office Address: 5 Echendu close, Woji, Port Harcourt, Rivers state</p>
+                    <p class="mb-0 m-0">Office Address: 21 Silas Ihunwo Street, Alcon, Woji, Port Harcourt Rivers state</p>
                     <p class="mb-0 m-0">Website: www.banneruntonations.org | Email: info@banneruntonations.org</p>
                 </div>
             </div>
@@ -299,7 +295,7 @@
                     </div>
                 </div>
                 <div class="mt-1 text-[10px] text-gray-500 border-t border-gray-200 pt-1 text-center">
-                    <p class="mb-0 m-0">Office Address: 5 Echendu close, Woji, Port Harcourt, Rivers state</p>
+                    <p class="mb-0 m-0">Office Address: 21 Silas Ihunwo Street, Alcon, Woji, Port Harcourt Rivers state</p>
                     <p class="mb-0 m-0">Website: www.banneruntonations.org | Email: info@banneruntonations.org</p>
                 </div>
             </div>
@@ -312,30 +308,20 @@
             <img src="logo.png" alt="Logo" class="h-12 mx-auto mb-4" onerror="this.style.display='none'">
             <h3 class="text-xl font-bold mb-1 font-heading">Yetay Memorial Project</h3>
             <p class="text-blue-200 mb-6 text-sm">Banner Unto Nations Foundation</p>
-
             <div class="flex justify-center items-center space-x-5 md:space-x-6 mb-8">
                 <a href="https://web.facebook.com/profile.php?id=61560969430207" target="_blank" rel="noopener noreferrer" class="group">
-                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-[#1877F2] group-hover:bg-[#1877F2] group-hover:text-white transition-all duration-300 shadow-lg transform group-hover:-translate-y-1">
-                        <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
-                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-[#1877F2] group-hover:bg-[#1877F2] group-hover:text-white transition-all duration-300 shadow-lg transform group-hover:-translate-y-1"><svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></div>
                 </a>
                 <a href="https://www.instagram.com/yetaybiblequiz/" target="_blank" rel="noopener noreferrer" class="group">
-                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-[#E1306C] group-hover:bg-gradient-to-tr group-hover:from-[#F58529] group-hover:via-[#DD2A7B] group-hover:to-[#8134AF] group-hover:text-white transition-all duration-300 shadow-lg transform group-hover:-translate-y-1">
-                        <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg>
-                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-[#E1306C] group-hover:bg-gradient-to-tr group-hover:from-[#F58529] group-hover:via-[#DD2A7B] group-hover:to-[#8134AF] group-hover:text-white transition-all duration-300 shadow-lg transform group-hover:-translate-y-1"><svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg></div>
                 </a>
                 <a href="https://www.youtube.com/@Yetay-quiz" target="_blank" rel="noopener noreferrer" class="group">
-                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-[#FF0000] group-hover:bg-[#FF0000] group-hover:text-white transition-all duration-300 shadow-lg transform group-hover:-translate-y-1">
-                        <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z" clip-rule="evenodd" /></svg>
-                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-[#FF0000] group-hover:bg-[#FF0000] group-hover:text-white transition-all duration-300 shadow-lg transform group-hover:-translate-y-1"><svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z" clip-rule="evenodd" /></svg></div>
                 </a>
                 <a href="https://chat.whatsapp.com/D2seJ7Uaxr2Lizx5ZHaI3d" target="_blank" rel="noopener noreferrer" class="group">
-                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-[#25D366] group-hover:bg-[#25D366] group-hover:text-white transition-all duration-300 shadow-lg transform group-hover:-translate-y-1">
-                        <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.77.464 3.5 1.348 5.01L2 22l5.093-1.336A9.98 9.98 0 0012.031 22c5.536 0 10.031-4.495 10.031-10.031S17.567 2 12.031 2zm5.556 14.48c-.244.686-1.42 1.31-1.968 1.393-.526.08-1.2.22-3.805-.85-3.328-1.36-5.46-4.78-5.624-5.006-.164-.226-1.346-1.79-1.346-3.418 0-1.628.847-2.43 1.15-2.733.303-.303.662-.379.882-.379.22 0 .44.004.64.013.208.01.488-.08.761.58.286.686.974 2.378 1.059 2.543.085.165.143.356.033.58-.11.224-.165.362-.33.551-.165.188-.344.408-.495.551-.165.165-.337.34-.148.665.19.324.846 1.398 1.821 2.268 1.258 1.121 2.302 1.466 2.632 1.631.33.165.523.148.718-.066.195-.214.846-.983 1.074-1.319.229-.336.458-.28.756-.169.298.11 1.884.891 2.207 1.056.323.165.539.248.618.384.079.136.079.79-.165 1.476z" clip-rule="evenodd" /></svg>
-                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-[#25D366] group-hover:bg-[#25D366] group-hover:text-white transition-all duration-300 shadow-lg transform group-hover:-translate-y-1"><svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.77.464 3.5 1.348 5.01L2 22l5.093-1.336A9.98 9.98 0 0012.031 22c5.536 0 10.031-4.495 10.031-10.031S17.567 2 12.031 2zm5.556 14.48c-.244.686-1.42 1.31-1.968 1.393-.526.08-1.2.22-3.805-.85-3.328-1.36-5.46-4.78-5.624-5.006-.164-.226-1.346-1.79-1.346-3.418 0-1.628.847-2.43 1.15-2.733.303-.303.662-.379.882-.379.22 0 .44.004.64.013.208.01.488-.08.761.58.286.686.974 2.378 1.059 2.543.085.165.143.356.033.58-.11.224-.165.362-.33.551-.165.188-.344.408-.495.551-.165.165-.337.34-.148.665.19.324.846 1.398 1.821 2.268 1.258 1.121 2.302 1.466 2.632 1.631.33.165.523.148.718-.066.195-.214.846-.983 1.074-1.319.229-.336.458-.28.756-.169.298.11 1.884.891 2.207 1.056.323.165.539.248.618.384.079.136.079.79-.165 1.476z" clip-rule="evenodd" /></svg></div>
                 </a>
             </div>
-            
             <p class="text-gray-400 text-sm">&copy; 2026 Banner Unto Nations Foundation. All rights reserved.</p>
         </div>
     </footer>
@@ -348,13 +334,19 @@
             menu.classList.toggle('hidden');
         });
 
-        // Data Fetching Logic for Dynamic Content
-        document.addEventListener("DOMContentLoaded", async () => {
+        document.addEventListener("DOMContentLoaded", () => {
             const urlParams = new URLSearchParams(window.location.search);
             const churchName = urlParams.get('church');
             const pwd = urlParams.get('pwd');
+            const lga = urlParams.get('lga') || "Port Harcourt";
+            const addresseeName = urlParams.get('name') || "Church Representative";
+            const addresseeTitle = urlParams.get('title') || "Coordinator";
             
-            // Password dashboard update
+            // Set dynamic current date
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            document.querySelectorAll('.dynamic-date').forEach(el => el.textContent = "Date: " + formattedDate);
+
             if (pwd) {
                 document.getElementById('displayPassword').textContent = pwd;
             }
@@ -362,36 +354,12 @@
             if (churchName && churchName.trim() !== "") {
                 document.getElementById('displayUsername').textContent = churchName;
                 document.querySelectorAll('.dynamicChurchName').forEach(el => el.textContent = churchName + ",");
-                
-                // Fetch actual data from backend
-                try {
-                    // PASTE YOUR SCRIPT URL HERE
-                    const scriptURL = "https://script.google.com/macros/s/AKfycbzMnfYQ-gfbxlnUNnzmLuY3uaBjLfHldWkXFQK0jvN31hNrDNHTsuJOsAIAdwBzR9ar/exec";
-                    
-                    const params = new URLSearchParams();
-                    params.append("action", "getChurchData");
-                    params.append("churchName", churchName);
-                    
-                    const response = await fetch(scriptURL, { method: "POST", body: params });
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        // Format the date (e.g., 17 April, 2026)
-                        const regDate = new Date(result.regDate);
-                        const formattedDate = regDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-                        
-                        document.querySelectorAll('.dynamic-date').forEach(el => el.textContent = "Date: " + formattedDate);
-                        document.querySelectorAll('.dynamic-title').forEach(el => el.textContent = result.addresseeTitle || "Children & Teens Coordinator");
-                        document.querySelectorAll('.dynamic-addressee').forEach(el => el.textContent = result.addresseeName || "Church Representative");
-                        document.querySelectorAll('.dynamic-lga').forEach(el => el.textContent = (result.lga || "Port Harcourt") + ".");
-                    }
-                } catch (error) {
-                    console.error("Could not fetch full church profile for letter:", error);
-                }
+                document.querySelectorAll('.dynamic-title').forEach(el => el.textContent = addresseeTitle);
+                document.querySelectorAll('.dynamic-addressee').forEach(el => el.textContent = addresseeName);
+                document.querySelectorAll('.dynamic-lga').forEach(el => el.textContent = lga + ".");
             }
         });
 
-        // PDF Generator Logic
         function downloadAsPDF() {
             const wrapper = document.getElementById('printable-wrapper');
             const btn = document.getElementById('downloadBtn');

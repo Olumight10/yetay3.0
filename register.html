@@ -112,6 +112,13 @@
                         <input class="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:border-blue-900" type="text" id="addresseeTitle" name="addresseeTitle" placeholder="Enter Position / Title" required>
                     </div>
 
+                    <div>
+                        <label for="username" class="block font-semibold text-gray-700 mb-1">Church Alias (Username) <span class="text-red-500">*</span></label>
+                        <p class="text-xs text-gray-500 mb-2">Create a short, unique abbreviation for your church to use when logging in</p>
+                        <input type="text" name="username" id="username" placeholder="Enter short alias" required 
+                            class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition">
+                    </div>
+
                     <div class="bg-gray-50 p-5 rounded-md border border-gray-200">
                         <label class="block font-semibold text-gray-800 mb-1">Select Competing Categories <span class="text-red-500">*</span></label>
                         <p class="text-sm text-gray-500 mb-4">Check all the categories your church will be participating in.</p>
@@ -235,7 +242,6 @@
                 const formData = new FormData(form);
                 const params = new URLSearchParams();
                 
-                // Add the action parameter for the backend router
                 params.append("action", "register");
                 
                 for (const pair of formData.entries()) {
@@ -252,7 +258,6 @@
                         body: params.toString(),
                     });
 
-                    // CRITICAL FIX: We now parse the response as JSON, not text
                     const result = await response.json();
 
                     if (result.success) {
@@ -265,33 +270,43 @@
                             timerProgressBar: true
                         });
                         
-                    // Replace your existing setTimeout block in register.html with this:
-                    setTimeout(() => {
-                        // Grab all the inputs
-                        const churchNameInput = document.getElementById('churchName').value;
-                        const lgaInput = document.getElementById('lga').value;
-                        const addresseeNameInput = document.getElementById('addresseeName').value;
-                        const addresseeTitleInput = document.getElementById('addresseeTitle').value;
+                        setTimeout(() => {
+                            const churchNameInput = document.getElementById('churchName').value;
+                            const lgaInput = document.getElementById('lga').value;
+                            const addresseeNameInput = document.getElementById('addresseeName').value;
+                            const addresseeTitleInput = document.getElementById('addresseeTitle').value;
+                            // Capture the new username
+                            const usernameInput = result.username || document.getElementById('username').value;
 
-                        // Encode them for the URL
-                        const encodedChurchName = encodeURIComponent(churchNameInput);
-                        const encodedLga = encodeURIComponent(lgaInput);
-                        const encodedName = encodeURIComponent(addresseeNameInput);
-                        const encodedTitle = encodeURIComponent(addresseeTitleInput);
-                        
-                        // Redirect with ALL data attached instantly
-                        window.location.href = `letter.html?church=${encodedChurchName}&pwd=${result.password}&lga=${encodedLga}&name=${encodedName}&title=${encodedTitle}`; 
-                    }, 2500);
+                            const encodedChurchName = encodeURIComponent(churchNameInput);
+                            const encodedLga = encodeURIComponent(lgaInput);
+                            const encodedName = encodeURIComponent(addresseeNameInput);
+                            const encodedTitle = encodeURIComponent(addresseeTitleInput);
+                            
+                            // We pass the new username into the URL instead of the long church name
+                            window.location.href = `letter.html?church=${encodedChurchName}&user=${encodeURIComponent(usernameInput)}&pwd=${result.password}&lga=${encodedLga}&name=${encodedName}&title=${encodedTitle}`; 
+                        }, 2500);
 
                     } else {
-                        throw new Error(result.message || "Server rejected submission");
+                        // CLEAN DUPLICATE ERROR HANDLING
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Registration Failed',
+                            text: result.message || "Server rejected submission",
+                            confirmButtonColor: '#d33'
+                        });
+                        
+                        // Reset button so they can fix the error and try again
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        submitBtn.textContent = "Submit Registration";
                     }
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops...',
-                        text: 'Failed to submit form: ' + error.message,
-                        confirmButtonColor: '#0056b3'
+                        title: 'Network Error',
+                        text: 'Failed to connect to the server. Please check your connection.',
+                        confirmButtonColor: '#d33'
                     });
                     submitBtn.disabled = false;
                     submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');

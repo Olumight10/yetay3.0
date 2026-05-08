@@ -68,15 +68,15 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 gap-3 md:gap-4">
                 <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-100 text-center border-b-4 border-blue-900">
                     <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Total Points</p>
-                    <p class="text-xl md:text-2xl font-bold text-blue-900">10</p>
+                    <p class="text-xl md:text-2xl font-bold text-blue-900" id="stat-total-points">0</p>
                 </div>
                 <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-100 text-center">
                     <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Assessments</p>
-                    <p class="text-xl md:text-2xl font-bold text-gray-800">1</p>
+                    <p class="text-xl md:text-2xl font-bold text-gray-800" id="stat-assessments">0</p>
                 </div>
                 <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-100 text-center border-b-4 border-green-500">
                     <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Attempted</p>
-                    <p class="text-xl md:text-2xl font-bold text-green-600">1</p>
+                    <p class="text-xl md:text-2xl font-bold text-green-600" id="stat-attempted">0</p>
                 </div>
                 <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border border-gray-100 text-center border-b-4 border-gray-200">
                     <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Missed</p>
@@ -94,22 +94,22 @@
             <div class="bg-green-50 border border-green-200 rounded-lg p-5 md:p-6 mt-6 relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-green-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Latest Activity</div>
                 <h3 class="font-bold text-green-900 mb-1">Last Assessment Completed</h3>
-                <p class="text-sm text-green-800 font-semibold mb-4">Portal Onboarding & Initial Setup</p>
+                <p class="text-sm text-green-800 font-semibold mb-4" id="stat-last-task">Portal Onboarding & Initial Setup</p>
                 
                 <div class="flex flex-wrap gap-6 items-center">
-                    <div class="bg-white px-4 py-2 rounded shadow-sm border border-green-100">
+                    <div class="bg-white px-4 py-2 rounded shadow-sm border border-green-100 hidden md:block">
                         <span class="text-[10px] uppercase font-bold text-gray-500 block mb-0.5">Previous Points</span>
-                        <span class="font-mono font-bold text-gray-800 text-sm">0</span>
+                        <span class="font-mono font-bold text-gray-800 text-sm">--</span>
                     </div>
-                    <div class="text-green-500 font-black text-xl">+</div>
+                    <div class="text-green-500 font-black text-xl hidden md:block">+</div>
                     <div class="bg-white px-4 py-2 rounded shadow-sm border border-green-100">
                         <span class="text-[10px] uppercase font-bold text-gray-500 block mb-0.5">Points Earned</span>
-                        <span class="font-mono font-bold text-green-600 text-sm">10</span>
+                        <span class="font-mono font-bold text-green-600 text-sm" id="stat-last-earned">0</span>
                     </div>
                     <div class="text-green-500 font-black text-xl">=</div>
                     <div class="bg-white px-4 py-2 rounded shadow-sm border-2 border-green-500">
                         <span class="text-[10px] uppercase font-bold text-green-700 block mb-0.5">New Total</span>
-                        <span class="font-mono font-black text-blue-900 text-lg">10</span>
+                        <span class="font-mono font-black text-blue-900 text-lg" id="stat-new-total">0</span>
                     </div>
                 </div>
             </div>
@@ -141,11 +141,9 @@
                             <th class="p-3 md:p-4 font-semibold">Score</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="assessment-history-body">
                         <tr class="border-t">
-                            <td class="p-3 md:p-4 font-bold text-gray-800">Portal Onboarding & Setup</td>
-                            <td class="p-3 md:p-4 text-gray-500" id="onboardDate">Today</td>
-                            <td class="p-3 md:p-4 text-green-600 font-bold">+10 Pts</td>
+                            <td colspan="3" class="p-6 text-center text-gray-400 font-bold">Loading Assessments...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -212,17 +210,14 @@
                     </div>
                 </div>
                 
-                <div class="flex-grow overflow-y-auto flex items-center justify-center p-4 md:p-8" id="cbt-questions-container"></div>
+                <div class="flex-grow overflow-y-auto flex items-center justify-center p-4 md:p-8" id="cbt-questions-container">
+                    </div>
                 
                 <div class="bg-white border-t p-4 flex justify-between items-center shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
                     <button onclick="navCbt(-1)" id="cbt-prev-btn" class="bg-gray-600 text-white font-bold px-4 md:px-6 py-2 md:py-2.5 rounded hover:bg-gray-700 transition disabled:opacity-50 text-sm md:text-base">Previous</button>
-                    
-                    <span id="cbt-progress" class="font-bold text-gray-500 text-sm md:text-base text-center">1 / 50</span>
-                    
-                    <div class="flex items-center space-x-2 md:space-x-4">
-                        <button onclick="navCbt(1)" id="cbt-next-btn" class="bg-blue-600 text-white font-bold px-4 md:px-6 py-2 md:py-2.5 rounded hover:bg-blue-700 transition disabled:opacity-50 text-sm md:text-base">Next</button>
-                        <button onclick="submitCBT()" id="cbt-submit-btn" class="bg-green-600 text-white font-bold px-4 md:px-8 py-2 md:py-2.5 rounded shadow hover:bg-green-700 transition text-sm md:text-base">Submit</button>
-                    </div>
+                    <span id="cbt-progress" class="font-bold text-gray-500 text-sm md:text-base">1 / 50</span>
+                    <button onclick="navCbt(1)" id="cbt-next-btn" class="bg-blue-600 text-white font-bold px-4 md:px-6 py-2 md:py-2.5 rounded hover:bg-blue-700 transition disabled:opacity-50 text-sm md:text-base">Next Question</button>
+                    <button onclick="submitCBT()" id="cbt-submit-btn" class="hidden bg-green-600 text-white font-bold px-4 md:px-8 py-2 md:py-2.5 rounded shadow hover:bg-green-700 transition animate-pulse text-sm md:text-base">Submit Exam</button>
                 </div>
             </div>
 
@@ -394,7 +389,46 @@
             document.getElementById('onboardDate').innerText = new Date().toLocaleDateString();
             
             fetchChurchData(churchName);
+            fetchChurchAssessments(churchName);
         });
+
+        async function fetchChurchAssessments(name) {
+            try {
+                const params = new URLSearchParams();
+                params.append("action", "getChurchAssessments");
+                params.append("churchName", name);
+                const resp = await fetch(scriptURL, { method: "POST", body: params });
+                const d = await resp.json();
+                
+                if(d.success) {
+                    document.getElementById('stat-total-points').innerText = d.totalPoints;
+                    document.getElementById('stat-new-total').innerText = d.totalPoints;
+                    document.getElementById('stat-assessments').innerText = d.assessments.length;
+                    document.getElementById('stat-attempted').innerText = d.assessments.length;
+                    
+                    if (d.assessments.length > 0) {
+                        document.getElementById('stat-last-task').innerText = d.assessments[0].title;
+                        document.getElementById('stat-last-earned').innerText = d.assessments[0].score;
+                    }
+
+                    const tbody = document.getElementById('assessment-history-body');
+                    tbody.innerHTML = "";
+                    if(d.assessments.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="3" class="p-6 text-center text-gray-500">No assessments logged yet.</td></tr>`;
+                    } else {
+                        d.assessments.forEach(item => {
+                            tbody.innerHTML += `
+                                <tr class="border-t hover:bg-gray-50 transition">
+                                    <td class="p-3 md:p-4 font-bold text-gray-800">${item.title}</td>
+                                    <td class="p-3 md:p-4 text-gray-500 font-mono text-xs">System Auto-Logged</td>
+                                    <td class="p-3 md:p-4 text-green-600 font-bold">+${item.score} Pts</td>
+                                </tr>
+                            `;
+                        });
+                    }
+                }
+            } catch (e) { console.error("Error fetching assessments", e); }
+        }
 
         async function fetchChurchData(name) {
             try {
@@ -468,11 +502,12 @@
         let activeCategory = "";
         let timerInterval;
         let quizCurrentIndex = 0;
-        let cbtCurrentIndex = 0; // Added for CBT Slider
+        let cbtCurrentIndex = 0;
 
         async function startSession(category, type) {
             const userId = localStorage.getItem("yetay_session_id");
             const roleType = localStorage.getItem("yetay_session_role");
+            const churchName = localStorage.getItem("yetay_church_name");
             
             document.getElementById('pq-hub-menu').classList.add('hidden');
             Swal.fire({title: 'Loading Data...', text: 'Fetching from secure vault', allowOutsideClick: false, didOpen: () => { Swal.showLoading() }});
@@ -492,6 +527,9 @@
                 if(resData.success && resData.data.length > 0) {
                     activeQuestions = resData.data;
                     activeCategory = category;
+                    
+                    fetchChurchAssessments(churchName);
+
                     if(type === 'cbt') initCBT();
                     else initQuiz();
                 } else {
@@ -511,7 +549,7 @@
             document.getElementById('pq-hub-menu').classList.remove('hidden');
         }
 
-// --- NEW CBT SLIDER LOGIC ---
+        // --- NEW CBT SLIDER LOGIC ---
         function initCBT() {
             cbtAnswers = {};
             cbtCurrentIndex = 0;
@@ -551,9 +589,15 @@
             const progressEl = document.getElementById('cbt-progress');
             if(progressEl) progressEl.innerText = `${cbtCurrentIndex + 1} / ${activeQuestions.length}`;
             
-            // Disable Prev button on first question, disable Next button on last question
             document.getElementById('cbt-prev-btn').disabled = cbtCurrentIndex === 0;
-            document.getElementById('cbt-next-btn').disabled = cbtCurrentIndex === activeQuestions.length - 1;
+            
+            if(cbtCurrentIndex === activeQuestions.length - 1) {
+                document.getElementById('cbt-next-btn').classList.add('hidden');
+                document.getElementById('cbt-submit-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('cbt-next-btn').classList.remove('hidden');
+                document.getElementById('cbt-submit-btn').classList.add('hidden');
+            }
         }
 
         function navCbt(dir) {
@@ -603,7 +647,7 @@
                     }).then(() => { exitSession(); });
                 }
             } catch (err) { Swal.fire('Error', 'Failed to save score.', 'error'); }
-            btn.disabled = false; btn.textContent = "Submit CBT";
+            btn.disabled = false; btn.textContent = "Submit Exam";
         }
 
         // --- QUIZ LOGIC ---

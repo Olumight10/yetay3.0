@@ -67,6 +67,25 @@
                 <p class="text-gray-300 text-sm max-w-lg mx-auto">You have full override access. Use this terminal to manage the database, assign internal tasks, push out church assessments, and trigger live examinations.</p>
             </div>
 
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center border-b-4 border-blue-900">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Active Admins</p>
+                    <p class="text-2xl font-bold text-blue-900" id="stat-admins">...</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center border-b-4 border-yellow-500">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Total Churches</p>
+                    <p class="text-2xl font-bold text-gray-800 loading-pulse" id="stat-churches-overview">...</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center border-b-4 border-green-500">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Tasks Assigned</p>
+                    <p class="text-2xl font-bold text-green-600">0</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center border-b-4 border-red-500">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Pending Alerts</p>
+                    <p class="text-2xl font-bold text-red-600">0</p>
+                </div>
+            </div>
+
             <div class="bg-red-50 border border-red-200 rounded-lg p-5 md:p-6 relative overflow-hidden shadow-sm mb-8 max-w-3xl mx-auto">
                 <div class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Latest Activity</div>
                 <h3 class="font-bold text-red-900 mb-1">Last Task Completed</h3>
@@ -96,15 +115,38 @@
                     <thead class="bg-blue-900 text-white">
                         <tr><th class="p-4 font-bold">Admin Name</th><th class="p-4 font-bold">Role</th><th class="p-4 text-right">Points</th></tr>
                     </thead>
-                    <tbody id="leaderboard-body" class="text-gray-700"></tbody>
+                    <tbody id="leaderboard-body" class="text-gray-700">
+                        <tr><td colspan="3" class="p-6 text-center text-gray-400">Loading Leaderboard...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
 
         <div id="tab-registrations" class="tab-content">
+            
+            <h3 class="text-lg md:text-xl font-bold text-blue-900 mb-4 border-b pb-2">Yetay 3.0 Dashboard</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+                <div onclick="filterRegistry('all')" class="bg-blue-900 p-3 md:p-4 rounded-lg shadow-md text-center cursor-pointer hover:scale-105 transition text-white">
+                    <p class="text-[10px] md:text-xs text-blue-200 font-bold uppercase mb-1">Total Churches</p>
+                    <p id="stat-total" class="text-xl md:text-3xl font-bold loading-pulse">...</p>
+                </div>
+                <div onclick="filterRegistry('junior')" class="bg-white p-3 md:p-4 rounded-lg shadow-sm border text-center cursor-pointer hover:border-yellow-500 transition">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Junior Enrolled</p>
+                    <p id="stat-junior" class="text-xl md:text-2xl font-bold text-gray-800 loading-pulse">...</p>
+                </div>
+                <div onclick="filterRegistry('intermediate')" class="bg-white p-3 md:p-4 rounded-lg shadow-sm border text-center cursor-pointer hover:border-green-500 transition">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Inter Enrolled</p>
+                    <p id="stat-inter" class="text-xl md:text-2xl font-bold text-gray-800 loading-pulse">...</p>
+                </div>
+                <div onclick="filterRegistry('senior')" class="bg-white p-3 md:p-4 rounded-lg shadow-sm border text-center cursor-pointer hover:border-red-500 transition">
+                    <p class="text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-1">Senior Enrolled</p>
+                    <p id="stat-senior" class="text-xl md:text-2xl font-bold text-gray-800 loading-pulse">...</p>
+                </div>
+            </div>
+
             <div class="bg-white rounded-lg shadow-sm border overflow-x-auto">
                 <div class="p-4 border-b bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                    <h3 class="font-bold text-gray-800">Master Church Registry</h3>
+                    <h3 class="font-bold text-gray-800" id="crm-table-title">Master Church Registry</h3>
                     <input type="text" id="crmSearch" onkeyup="filterRegistryBySearch()" placeholder="Search churches..." class="border rounded px-3 py-1.5 text-sm focus:outline-none focus:border-blue-900 w-full sm:w-64">
                 </div>
                 <table class="w-full text-left text-xs md:text-sm whitespace-nowrap">
@@ -244,38 +286,44 @@
         </div>
 
         <div id="tab-archives" class="tab-content">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 md:mb-6">
-                <h2 class="text-xl md:text-2xl font-bold text-gray-800">Archive Manager</h2>
-                <button class="w-full sm:w-auto bg-yellow-500 text-blue-900 font-bold px-4 py-2 rounded shadow hover:bg-yellow-400 transition text-sm md:text-base">+ Upload Resource</button>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border overflow-x-auto">
-                <table class="w-full text-left text-xs md:text-sm whitespace-nowrap md:whitespace-normal">
-                    <thead class="bg-gray-50 text-gray-600">
-                        <tr>
-                            <th class="p-3 md:p-4 font-semibold">Edition</th>
-                            <th class="p-3 md:p-4 font-semibold">Category & Subject</th>
-                            <th class="p-3 md:p-4 font-semibold text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t hover:bg-gray-50">
-                            <td class="p-3 md:p-4 font-bold text-gray-800">Yetay 2.0</td>
-                            <td class="p-3 md:p-4 text-gray-600">Junior - Genesis & Mark</td>
-                            <td class="p-3 md:p-4 text-right space-x-2">
-                                <button class="text-blue-600 hover:underline font-semibold">Edit</button>
-                                <button class="text-red-500 hover:underline font-semibold">Delete</button>
-                            </td>
-                        </tr>
-                        <tr class="border-t hover:bg-gray-50">
-                            <td class="p-3 md:p-4 font-bold text-gray-800">Yetay 1.0</td>
-                            <td class="p-3 md:p-4 text-gray-600">Senior - Acts of the Apostles</td>
-                            <td class="p-3 md:p-4 text-right space-x-2">
-                                <button class="text-blue-600 hover:underline font-semibold">Edit</button>
-                                <button class="text-red-500 hover:underline font-semibold">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <h2 class="text-xl md:text-2xl font-bold text-blue-900 mb-6 border-b pb-2">Archive Manager (Past Questions)</h2>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-blue-200 max-w-2xl mx-auto">
+                <div class="bg-blue-50 p-4 rounded text-sm text-gray-700 mb-6 border border-blue-100">
+                    <strong class="text-blue-900">Upload Protocol:</strong>
+                    <ul class="list-disc pl-5 mt-2 space-y-1 text-xs">
+                        <li>Select your specific <b>Target Category</b> and intended <b>Target Engine</b>.</li>
+                        <li>Upload your correctly formatted .csv file here.</li>
+                        <li>The system will securely push the questions exactly as they are to your selected database without any automatic splitting.</li>
+                    </ul>
+                </div>
+
+                <form id="pqUploadForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Target Category</label>
+                            <select id="pqCategory" required class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:border-blue-900 focus:outline-none">
+                                <option value="">Select Category...</option>
+                                <option value="junior">Junior Category</option>
+                                <option value="intermediate">Intermediate Category</option>
+                                <option value="senior">Senior Category</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Target Engine (Destination)</label>
+                            <select id="pqType" required class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:border-blue-900 focus:outline-none">
+                                <option value="">Select Destination...</option>
+                                <option value="cbt">CBT Engine</option>
+                                <option value="quiz">Interactive Quiz</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Select Question CSV File</label>
+                        <input type="file" id="pqFile" accept=".csv" required class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:border-blue-900 focus:outline-none bg-gray-50">
+                    </div>
+                    <button type="submit" id="pqUploadBtn" class="w-full bg-blue-900 text-white font-bold py-2.5 mt-2 rounded hover:bg-blue-800 transition text-sm shadow">Parse & Upload to Selected Database</button>
+                </form>
             </div>
         </div>
 
@@ -471,13 +519,32 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             const userId = localStorage.getItem("yetay_session_id");
-            const roleType = localStorage.getItem("yetay_session_role");
             
-            if (roleType !== "admin" || userId !== "SP-ADMIN") { window.location.href = "login.html"; return; }
+            if (userId !== "SP-ADMIN") {
+                window.location.href = "login.html";
+                return;
+            }
 
+            fetchStats();
             fetchRegistry();
-            fetchAdminList(); 
+            fetchAdminList();
         });
+
+        async function fetchStats() {
+            try {
+                const p = new URLSearchParams(); p.append("action", "getStats");
+                const r = await fetch(scriptURL, {method:"POST", body:p});
+                const d = await r.json();
+                if(d.success) {
+                    document.getElementById('stat-churches-overview').innerText = d.total;
+                    document.getElementById('stat-total').innerText = d.total;
+                    document.getElementById('stat-junior').innerText = d.junior;
+                    document.getElementById('stat-inter').innerText = d.intermediate;
+                    document.getElementById('stat-senior').innerText = d.senior;
+                    document.querySelectorAll('.loading-pulse').forEach(el => el.classList.remove('loading-pulse'));
+                }
+            } catch(e) {}
+        }
 
         async function fetchRegistry() {
             try {
@@ -495,7 +562,7 @@
             if(data.length === 0) { tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-400">No matches found.</td></tr>`; return; }
             data.forEach((row, index) => {
                 const tr = document.createElement('tr');
-                tr.className = "border-t hover:bg-gray-50";
+                tr.className = "border-t hover:bg-gray-50 transition";
                 tr.innerHTML = `
                     <td class="p-4 font-bold text-blue-900 truncate max-w-[120px] sm:max-w-none">${row[1]}</td>
                     <td class="p-4 text-xs font-mono font-semibold text-gray-600">${row[8] || 'N/A'}</td>
@@ -504,6 +571,21 @@
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        // Added functionality to filter the registry table by clicking the Metric Cards!
+        function filterRegistry(filter) {
+            if (filter === 'all') {
+                renderTable(registryData);
+                document.getElementById('crm-table-title').innerText = "Master Church Registry (All)";
+                return;
+            }
+            
+            const filtered = registryData.filter(row => row[4] && row[4].toLowerCase().includes(filter));
+            renderTable(filtered);
+            
+            const titles = { 'junior': 'Junior Participating Churches', 'intermediate': 'Intermediate Participating Churches', 'senior': 'Senior Participating Churches' };
+            document.getElementById('crm-table-title').innerText = titles[filter];
         }
 
         function filterRegistryBySearch() {
@@ -548,23 +630,84 @@
                 
                 const selectDropdown = document.getElementById('taskAssigneeDropdown');
                 const tbody = document.getElementById('leaderboard-body');
-                selectDropdown.innerHTML = '<option value="">Select Assignee...</option>';
-                tbody.innerHTML = "";
+                
+                if(selectDropdown) selectDropdown.innerHTML = '<option value="">Select Assignee...</option>';
+                if(tbody) tbody.innerHTML = "";
 
                 if(d.success) {
+                    document.getElementById('stat-admins').innerText = d.data.length;
+                    
                     d.data.forEach(adm => {
-                        const opt = document.createElement('option');
-                        opt.value = adm.name; opt.textContent = `${adm.name} (${adm.role})`;
-                        selectDropdown.appendChild(opt);
+                        if(selectDropdown) {
+                            const opt = document.createElement('option');
+                            opt.value = adm.name; opt.textContent = `${adm.name} (${adm.role})`;
+                            selectDropdown.appendChild(opt);
+                        }
 
-                        const tr = document.createElement('tr');
-                        tr.className = "border-t hover:bg-gray-50";
-                        tr.innerHTML = `<td class="p-4 font-bold">${adm.name}</td><td class="p-4 text-gray-500 text-xs">${adm.role}</td><td class="p-4 text-right font-bold text-blue-900">${adm.points}</td>`;
-                        tbody.appendChild(tr);
+                        if(tbody) {
+                            const tr = document.createElement('tr');
+                            tr.className = "border-t hover:bg-gray-50 transition";
+                            tr.innerHTML = `<td class="p-4 font-bold">${adm.name}</td><td class="p-4 text-gray-500 text-xs">${adm.role}</td><td class="p-4 text-right font-bold text-blue-900">${adm.points}</td>`;
+                            tbody.appendChild(tr);
+                        }
                     });
                 }
-            } catch(e) {}
+            } catch(e) { console.error(e); }
         }
+
+    // ================= CSV PARSER AND UPLOADER (ARCHIVES) =================
+        document.getElementById('pqUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const file = document.getElementById('pqFile').files[0];
+            const category = document.getElementById('pqCategory').value;
+            const targetType = document.getElementById('pqType').value; // Get CBT or Quiz choice
+            const btn = document.getElementById('pqUploadBtn');
+
+            if(!file || !category || !targetType) return;
+            
+            btn.disabled = true; btn.textContent = "Parsing CSV...";
+
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                const text = event.target.result;
+                const rows = text.split('\n');
+                const headers = rows[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+                let dataArray = [];
+
+                for(let i=1; i<rows.length; i++) {
+                    if(!rows[i].trim()) continue;
+                    // Regex to handle commas inside quotes in CSV
+                    let cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    let obj = {};
+                    for(let j=0; j<headers.length; j++) {
+                        obj[headers[j]] = cols[j] ? cols[j].replace(/^"|"$/g, '').trim() : "";
+                    }
+                    dataArray.push(obj);
+                }
+
+                btn.textContent = `Uploading to ${category.toUpperCase()} ${targetType.toUpperCase()}...`;
+                
+                try {
+                    const params = new URLSearchParams();
+                    params.append("action", "uploadPastQuestions");
+                    params.append("payload", JSON.stringify({ category: category, type: targetType, data: dataArray }));
+                    
+                    const response = await fetch(scriptURL, { method: "POST", body: params });
+                    const resData = await response.json();
+                    
+                    if(resData.success) {
+                        Swal.fire('Success', resData.message, 'success');
+                        document.getElementById('pqUploadForm').reset();
+                    } else {
+                        Swal.fire('Error', resData.message, 'error');
+                    }
+                } catch (err) {
+                    Swal.fire('Error', 'Failed to connect to backend.', 'error');
+                }
+                btn.disabled = false; btn.textContent = "Parse & Upload to Selected Database";
+            };
+            reader.readAsText(file);
+        });
     </script>
 </body>
 </html>

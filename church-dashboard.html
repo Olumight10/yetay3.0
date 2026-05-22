@@ -470,21 +470,41 @@
                 const params = new URLSearchParams();
                 params.append("action", "getChurchData");
                 params.append("churchName", name);
-                const resp = await fetch(scriptURL, { method: "POST", body: params });
+
+                const resp = await fetch(scriptURL, { 
+                    method: "POST", 
+                    body: params 
+                });
+                
                 const d = await resp.json();
                 
-                if(d.success) {
+                if (d.success) {
                     currentChurchContact = d.contact;
+
+                    // Profile Information
                     document.getElementById('prof-name').innerText = d.churchName;
                     document.getElementById('prof-id').innerText = localStorage.getItem("yetay_session_id");
                     document.getElementById('prof-address').innerText = d.address;
                     document.getElementById('prof-contact').innerText = d.contact;
-                    document.getElementById('res-letter-link').href = `letter.html?church=${encodeURIComponent(d.churchName)}`;
 
-                    const cats = d.categories.split(",").map(c => c.trim());
+                    // === BUILD FULL LETTER URL WITH ALL PARAMETERS ===
+                    const encodedChurch = encodeURIComponent(d.churchName || "");
+                    const encodedUser   = encodeURIComponent(d.username || "");     // from church_login or reg
+                    const encodedPwd    = encodeURIComponent(d.password || "");
+                    const encodedLga    = encodeURIComponent(d.lga || "");
+                    const encodedName   = encodeURIComponent(d.addresseeName || "");
+                    const encodedTitle  = encodeURIComponent(d.addresseeTitle || "");
+
+                    document.getElementById('res-letter-link').href = 
+                        `letter.html?church=${encodedChurch}&user=${encodedUser}&pwd=${encodedPwd}&lga=${encodedLga}&name=${encodedName}&title=${encodedTitle}`;
+
+                    // Categories & Slots (your existing code)
+                    const cats = (d.categories || "").split(",").map(c => c.trim());
                     const catContainer = document.getElementById('prof-cats');
                     const partGrid = document.getElementById('participants-grid');
-                    catContainer.innerHTML = ""; partGrid.innerHTML = "";
+                    
+                    catContainer.innerHTML = ""; 
+                    partGrid.innerHTML = "";
 
                     cats.forEach(cat => {
                         const badge = document.createElement('span');
@@ -498,15 +518,23 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="bg-white p-4 rounded-lg shadow-sm border flex items-center space-x-4 opacity-60">
                                     <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 font-bold text-xl border-2 border-dashed border-gray-400">?</div>
-                                    <div><p class="text-gray-400 font-bold uppercase text-[10px]">Slot 1</p><p class="font-semibold text-gray-700 text-sm">Awaiting Portal Activation</p></div>
+                                    <div>
+                                        <p class="text-gray-400 font-bold uppercase text-[10px]">Slot 1</p>
+                                        <p class="font-semibold text-gray-700 text-sm">Awaiting Portal Activation</p>
+                                    </div>
                                 </div>
                             </div>
                         `;
                         partGrid.appendChild(section);
                     });
+
                     document.getElementById('profile-container').classList.remove('hidden');
+                } else {
+                    console.warn("Church data not found");
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error("Error fetching church data:", e);
+            }
         }
 
         document.getElementById('internalChangePwdForm').addEventListener('submit', async (e) => {

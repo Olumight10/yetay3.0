@@ -234,14 +234,14 @@
             'MAK_7180.jpg',
             'MAK_7490.jpg'
         ];
-        
+
         let currentIndex = 0;
 
         function changeHeroBackground() {
             currentIndex = (currentIndex + 1) % images.length;
             heroSection.style.backgroundImage = `url('${images[currentIndex]}')`;
         }
-        
+
         setInterval(changeHeroBackground, 5000);
     </script>
 </body>

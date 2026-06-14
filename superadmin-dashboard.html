@@ -252,36 +252,32 @@
             </div>
         </div>
 
-        <div id="tab-maincbt" class="tab-content">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 md:mb-6">
-                <h2 class="text-xl md:text-2xl font-bold text-gray-800">Main CBT Configuration</h2>
-                <span class="bg-gray-200 text-gray-700 font-bold px-3 py-1 rounded text-xs md:text-sm">Status: Pre-Exam</span>
+        <div id="tab-maincbt" class="tab-content text-center py-12">
+            <div class="mb-8 text-center">
+                <h2 class="text-2xl font-bold text-gray-900 font-heading uppercase tracking-wide">Main CBT Portal</h2>
+                <p class="text-gray-500 text-sm mt-1">Select your access level to proceed.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-                <div class="bg-white p-5 md:p-6 rounded-lg shadow-sm border border-blue-200 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-bold text-blue-900 mb-2">Junior Category Bank</h3>
-                        <p class="text-[10px] md:text-xs font-bold text-gray-500">Drafted Questions: <span class="text-blue-600">0 / 50</span></p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                <a href="cbt.html" target="_blank" class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden text-center hover:shadow-xl hover:-translate-y-1 transition-all group block">
+                    <div class="bg-gray-900 p-8 text-white">
+                        <svg class="w-14 h-14 mx-auto text-yellow-400 mb-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                        <h3 class="text-xl font-bold font-heading">CBT ENGINE</h3>
                     </div>
-                    <button class="mt-4 w-full border border-blue-900 text-blue-900 text-sm md:text-base font-bold py-2 rounded hover:bg-blue-50 transition">Manage Bank</button>
-                </div>
-                <div class="bg-white p-5 md:p-6 rounded-lg shadow-sm border border-blue-200 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-bold text-blue-900 mb-2">Intermediate Category Bank</h3>
-                        <p class="text-[10px] md:text-xs font-bold text-gray-500">Drafted Questions: <span class="text-blue-600">0 / 50</span></p>
+                    <div class="p-6">
+                        <p class="text-gray-600 text-sm mb-4">Access the main examination interface for participants.</p>
+                        <span class="bg-yellow-100 border border-yellow-400 rounded px-4 py-2 text-xs font-bold text-yellow-700 uppercase">Enter CBT</span>
                     </div>
-                    <button class="mt-4 w-full border border-blue-900 text-blue-900 text-sm md:text-base font-bold py-2 rounded hover:bg-blue-50 transition">Manage Bank</button>
-                </div>
-                <div class="bg-white p-5 md:p-6 rounded-lg shadow-sm border border-blue-200 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-bold text-blue-900 mb-2">Senior Category Bank</h3>
-                        <p class="text-[10px] md:text-xs font-bold text-gray-500">Drafted Questions: <span class="text-blue-600">0 / 50</span></p>
+                </a>
+                <a href="moderator.html" target="_blank" class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden text-center hover:shadow-xl hover:-translate-y-1 transition-all group block">
+                    <div class="bg-blue-900 p-8 text-white">
+                        <svg class="w-14 h-14 mx-auto text-blue-300 mb-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <h3 class="text-xl font-bold font-heading">MODERATOR PANEL</h3>
                     </div>
-                    <button class="mt-4 w-full border border-blue-900 text-blue-900 text-sm md:text-base font-bold py-2 rounded hover:bg-blue-50 transition">Manage Bank</button>
-                </div>
-            </div>
-            <div class="bg-red-50 p-4 rounded-lg border border-red-200 text-center">
-                <p class="text-sm text-red-800 font-semibold">Note: Global Exam Activation is managed in the Control Room.</p>
+                    <div class="p-6">
+                        <p class="text-gray-600 text-sm mb-4">Access exam oversight, controls and live monitoring tools.</p>
+                        <span class="bg-blue-100 border border-blue-400 rounded px-4 py-2 text-xs font-bold text-blue-700 uppercase">Enter Moderator</span>
+                    </div>
+                </a>
             </div>
         </div>
 

@@ -99,13 +99,56 @@
         </div>
 
         <div id="tab-participants" class="tab-content">
-            <div class="bg-blue-50 border-l-4 border-blue-900 p-4 mb-6 rounded">
-                <p class="text-blue-900 font-bold text-sm md:text-base mb-1 uppercase tracking-wider">Upload Status: Locked</p>
-                <p class="text-xs md:text-sm text-blue-800">Participant details will be requested once the Super Admin opens the portal.</p>
+            <div id="pf-status-banner" class="bg-blue-50 border-l-4 border-blue-900 p-4 mb-6 rounded">
+                <p class="text-blue-900 font-bold text-sm md:text-base mb-1 uppercase tracking-wider">Participant Registration</p>
+                <p class="text-xs md:text-sm text-blue-800">Confirm your church details below, then fill in participant information for each category you registered for.</p>
             </div>
-            <div id="participants-grid" class="space-y-8">
-                <div class="text-center p-12 text-gray-400 font-bold italic">Checking categories...</div>
-            </div>
+
+            <form id="participantsForm" class="space-y-8">
+
+                <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="font-bold text-blue-900 mb-4 border-b pb-2 uppercase tracking-wide text-sm">Church Information <span class="text-xs font-normal text-gray-400 normal-case">(please confirm or correct)</span></h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Church Name <span class="text-red-600">*</span></label>
+                            <input type="text" id="pf-churchName" required class="w-full px-3 py-2 border border-gray-300 rounded focus:border-blue-900 focus:outline-none focus:ring-1 focus:ring-blue-900 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Church Address <span class="text-red-600">*</span></label>
+                            <input type="text" id="pf-churchAddress" required class="w-full px-3 py-2 border border-gray-300 rounded focus:border-blue-900 focus:outline-none focus:ring-1 focus:ring-blue-900 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Username / Alias <span class="text-red-600">*</span></label>
+                            <input type="text" id="pf-alias" required class="w-full px-3 py-2 border border-gray-300 rounded focus:border-blue-900 focus:outline-none focus:ring-1 focus:ring-blue-900 text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="font-bold text-blue-900 mb-2 border-b pb-2 uppercase tracking-wide text-sm">Select Competing Categories</h3>
+                    <p class="text-xs text-gray-500 mb-3">Tick a category to reveal its participant detail form below.</p>
+                    <div class="flex flex-wrap gap-6" id="pf-category-checkboxes">
+                        <label class="flex items-center space-x-2 text-sm font-semibold text-gray-700 cursor-pointer">
+                            <input type="checkbox" id="pf-cat-Junior" value="Junior" class="pf-cat-checkbox w-4 h-4">
+                            <span>Junior</span>
+                        </label>
+                        <label class="flex items-center space-x-2 text-sm font-semibold text-gray-700 cursor-pointer">
+                            <input type="checkbox" id="pf-cat-Intermediate" value="Intermediate" class="pf-cat-checkbox w-4 h-4">
+                            <span>Intermediate</span>
+                        </label>
+                        <label class="flex items-center space-x-2 text-sm font-semibold text-gray-700 cursor-pointer">
+                            <input type="checkbox" id="pf-cat-Senior" value="Senior" class="pf-cat-checkbox w-4 h-4">
+                            <span>Senior</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="participants-grid" class="space-y-8"></div>
+
+                <div class="flex justify-end">
+                    <button type="submit" id="participantsSubmitBtn" class="bg-blue-900 text-white font-bold px-6 py-2.5 rounded shadow hover:bg-blue-800 transition text-sm">Save Participant Details</button>
+                </div>
+            </form>
         </div>
 
         <div id="tab-assessments" class="tab-content">
@@ -404,6 +447,7 @@
     <script>
         const scriptURL = "https://script.google.com/macros/s/AKfycbzMnfYQ-gfbxlnUNnzmLuY3uaBjLfHldWkXFQK0jvN31hNrDNHTsuJOsAIAdwBzR9ar/exec";
         let currentChurchContact = "";
+        let currentCategories = [];
 
         function openTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -498,35 +542,24 @@
                     document.getElementById('res-letter-link').href = 
                         `letter.html?church=${encodedChurch}&user=${encodedUser}&pwd=${encodedPwd}&lga=${encodedLga}&name=${encodedName}&title=${encodedTitle}`;
 
-                    // Categories & Slots (your existing code)
-                    const cats = (d.categories || "").split(",").map(c => c.trim());
+                    // Categories badges (Profile tab)
+                    const cats = (d.categories || "").split(",").map(c => c.trim()).filter(c => c);
                     const catContainer = document.getElementById('prof-cats');
-                    const partGrid = document.getElementById('participants-grid');
-                    
-                    catContainer.innerHTML = ""; 
-                    partGrid.innerHTML = "";
-
+                    catContainer.innerHTML = "";
                     cats.forEach(cat => {
                         const badge = document.createElement('span');
                         badge.className = "bg-gray-100 border text-gray-700 px-2 py-1 rounded text-xs font-semibold";
                         badge.innerText = cat;
                         catContainer.appendChild(badge);
-
-                        const section = document.createElement('div');
-                        section.innerHTML = `
-                            <h3 class="text-lg font-bold text-blue-900 mb-4 border-b pb-2 uppercase tracking-wide">${cat} Category Slots</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-white p-4 rounded-lg shadow-sm border flex items-center space-x-4 opacity-60">
-                                    <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 font-bold text-xl border-2 border-dashed border-gray-400">?</div>
-                                    <div>
-                                        <p class="text-gray-400 font-bold uppercase text-[10px]">Slot 1</p>
-                                        <p class="font-semibold text-gray-700 text-sm">Awaiting Portal Activation</p>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        partGrid.appendChild(section);
                     });
+
+                    // Prefill Participant Tab church info (editable in case of correction)
+                    document.getElementById('pf-churchName').value = d.churchName || "";
+                    document.getElementById('pf-churchAddress').value = d.address || "";
+                    document.getElementById('pf-alias').value = localStorage.getItem("yetay_session_id") || "";
+
+                    buildParticipantForm(cats);
+                    loadParticipantData();
 
                     document.getElementById('profile-container').classList.remove('hidden');
                 } else {
@@ -557,6 +590,332 @@
                 else { Swal.fire('Error', res.message, 'error'); }
             } catch(err) {}
             btn.disabled = false; btn.textContent = "Update Password";
+        });
+
+        // ================= PARTICIPANT REGISTRATION FORM =================
+        function buildParticipantForm(cats) {
+            currentCategories = cats;
+            const partGrid = document.getElementById('participants-grid');
+            partGrid.innerHTML = "";
+
+            const catMap = {
+                "Junior": { prefix: "junior", label: "Junior" },
+                "Intermediate": { prefix: "inter", label: "Intermediate" },
+                "Senior": { prefix: "senior", label: "Senior" }
+            };
+
+            // Build all three sections up front, hidden by default
+            Object.keys(catMap).forEach(cat => {
+                const info = catMap[cat];
+                const p = info.prefix;
+
+                const wrap = document.createElement('div');
+                wrap.id = `${p}SectionWrap`;
+                wrap.className = "hidden";
+
+                const section = document.createElement('div');
+                section.className = "bg-white p-5 rounded-lg shadow-sm border border-gray-200";
+                section.innerHTML = `
+                    <h3 class="text-base font-bold text-blue-900 mb-4 border-b pb-2 uppercase tracking-wide">${info.label} Category Details</h3>
+
+                    <div class="mb-6">
+                        <h4 class="font-bold text-gray-700 text-sm mb-3">Participant 1</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Name <span class="text-red-600">*</span></label><input type="text" id="${p}Part1Name" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none"></div>
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Gender <span class="text-red-600">*</span></label>
+                                <select id="${p}Part1Gender" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none">
+                                    <option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-1">Date of Birth <span class="text-red-600">*</span></label>
+                                <input type="date" id="${p}Part1DOB" required onchange="checkDOBField('${p}', 1)" class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none">
+                                <p id="${p}Part1DOBHint" class="text-[11px] text-gray-400 mt-1">Age must be ${AGE_RANGES[p].min}–${AGE_RANGES[p].max} years as of Aug 29, 2026</p>
+                            </div>
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Parent Name(s) <span class="text-red-600">*</span></label><input type="text" id="${p}Part1ParentName" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none"></div>
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Parent Phone <span class="text-red-600">*</span></label><input type="tel" id="${p}Part1ParentPhone" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="font-bold text-gray-700 text-sm mb-3">Participant 2</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Name <span class="text-red-600">*</span></label><input type="text" id="${p}Part2Name" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none"></div>
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Gender <span class="text-red-600">*</span></label>
+                                <select id="${p}Part2Gender" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none">
+                                    <option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-1">Date of Birth <span class="text-red-600">*</span></label>
+                                <input type="date" id="${p}Part2DOB" required onchange="checkDOBField('${p}', 2)" class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none">
+                                <p id="${p}Part2DOBHint" class="text-[11px] text-gray-400 mt-1">Age must be ${AGE_RANGES[p].min}–${AGE_RANGES[p].max} years as of Aug 29, 2026</p>
+                            </div>
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Parent Name(s) <span class="text-red-600">*</span></label><input type="text" id="${p}Part2ParentName" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none"></div>
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Parent Phone <span class="text-red-600">*</span></label><input type="tel" id="${p}Part2ParentPhone" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                        <h4 class="font-bold text-gray-700 text-sm mb-3">Category Teacher / Coach</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Teacher's Name <span class="text-red-600">*</span></label><input type="text" id="${p}TeacherName" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none"></div>
+                            <div><label class="block text-xs font-bold text-gray-500 mb-1">Teacher's Phone <span class="text-red-600">*</span></label><input type="tel" id="${p}TeacherPhone" required class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-blue-900 focus:outline-none"></div>
+                        </div>
+                    </div>
+                `;
+                wrap.appendChild(section);
+                partGrid.appendChild(wrap);
+            });
+
+            // Sections stay hidden until the church explicitly ticks the checkbox themselves
+            document.querySelectorAll('.pf-cat-checkbox').forEach(cb => {
+                const info = catMap[cb.value];
+                cb.checked = false;
+                document.getElementById(`${info.prefix}SectionWrap`).classList.add('hidden');
+                toggleSectionRequired(info.prefix, false);
+
+                cb.onchange = () => {
+                    document.getElementById(`${info.prefix}SectionWrap`).classList.toggle('hidden', !cb.checked);
+                    toggleSectionRequired(info.prefix, cb.checked);
+                };
+            });
+        }
+
+        function loadParticipantData() {
+            const params = new URLSearchParams();
+            params.append("action", "getParticipantData");
+            params.append("username", localStorage.getItem("yetay_session_id"));
+
+            fetch(scriptURL, { method: "POST", body: params })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success && res.data) {
+                        Object.keys(res.data).forEach(key => {
+                            // (kept below)
+                            let elId = key;
+                            if (key === "churchName") elId = "pf-churchName";
+                            if (key === "churchAddress") elId = "pf-churchAddress";
+                            const el = document.getElementById(elId);
+                            if (el && res.data[key]) el.value = res.data[key];
+                        });
+
+                        // Reveal a category's section (and tick its box) only if it already has saved data
+                        const catGroups = {
+                            Junior: ['juniorPart1Name','juniorPart2Name','juniorTeacherName'],
+                            Intermediate: ['interPart1Name','interPart2Name','interTeacherName'],
+                            Senior: ['seniorPart1Name','seniorPart2Name','seniorTeacherName']
+                        };
+                        const prefixMap = { Junior: 'junior', Intermediate: 'inter', Senior: 'senior' };
+
+                        Object.keys(catGroups).forEach(cat => {
+                            const hasData = catGroups[cat].some(k => res.data[k] && res.data[k].toString().trim() !== "");
+                            if (hasData) {
+                                const cb = document.getElementById(`pf-cat-${cat}`);
+                                const wrap = document.getElementById(`${prefixMap[cat]}SectionWrap`);
+                                if (cb) cb.checked = true;
+                                if (wrap) wrap.classList.remove('hidden');
+                                toggleSectionRequired(prefixMap[cat], true);
+                            }
+                        });
+
+                        pfAdminLocked = !!res.adminLocked;
+
+                        if (res.submitted) {
+                            setParticipantFormLocked(true);
+                        }
+                    }
+                }).catch(e => console.error("Error loading participant data", e));
+        }
+
+        const CONTEST_DATE = new Date(2026, 7, 29); // August 29, 2026 (month is 0-indexed)
+        const AGE_RANGES = {
+            junior: { min: 7, max: 11, label: "Junior (7–11 years)" },
+            inter: { min: 12, max: 15, label: "Intermediate (12–15 years)" },
+            senior: { min: 16, max: 19, label: "Senior (16–19 years)" }
+        };
+
+        function calculateAgeOnContestDate(dobString) {
+            const dob = new Date(dobString);
+            let age = CONTEST_DATE.getFullYear() - dob.getFullYear();
+            const monthDiff = CONTEST_DATE.getMonth() - dob.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && CONTEST_DATE.getDate() < dob.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        function toggleSectionRequired(prefix, isRequired) {
+            const wrap = document.getElementById(`${prefix}SectionWrap`);
+            if (!wrap) return;
+            wrap.querySelectorAll('input, select').forEach(el => {
+                if (isRequired) el.setAttribute('required', 'required');
+                else el.removeAttribute('required');
+            });
+        }
+
+        let pfAdminLocked = false; // set by loadParticipantData() from the backend
+
+        function setParticipantFormLocked(locked) {
+            const form = document.getElementById('participantsForm');
+            const banner = document.getElementById('pf-status-banner');
+            const submitBtn = document.getElementById('participantsSubmitBtn');
+
+            form.querySelectorAll('input, select').forEach(el => {
+                if (el.classList.contains('pf-cat-checkbox')) return;
+                el.disabled = locked;
+            });
+            document.querySelectorAll('.pf-cat-checkbox').forEach(cb => cb.disabled = locked);
+
+            if (locked) {
+                submitBtn.classList.add('hidden');
+
+                if (pfAdminLocked) {
+                    // Admin has disabled editing entirely — no Edit Details button shown at all
+                    banner.className = "bg-red-50 border-l-4 border-red-600 p-4 mb-6 rounded";
+                    banner.innerHTML = `
+                        <p class="text-red-800 font-bold text-sm md:text-base mb-1 uppercase tracking-wider">🔒 Editing Disabled</p>
+                        <p class="text-xs md:text-sm text-red-700">Your participant details have been recorded and locked by the Yetay Admin team. Please contact them directly if you need to make a correction.</p>
+                    `;
+                } else {
+                    banner.className = "bg-green-50 border-l-4 border-green-600 p-4 mb-6 rounded flex flex-col md:flex-row justify-between md:items-center gap-3";
+                    banner.innerHTML = `
+                        <div>
+                            <p class="text-green-800 font-bold text-sm md:text-base mb-1 uppercase tracking-wider">✓ Submission Confirmed</p>
+                            <p class="text-xs md:text-sm text-green-700">Your participant details have been recorded. Need to make a correction? Click Edit Details below.</p>
+                        </div>
+                        <button type="button" onclick="setParticipantFormLocked(false)" class="bg-white border border-green-600 text-green-700 font-bold px-4 py-2 rounded hover:bg-green-100 transition text-sm shrink-0">Edit Details</button>
+                    `;
+                }
+            } else {
+                submitBtn.classList.remove('hidden');
+                banner.className = "bg-blue-50 border-l-4 border-blue-900 p-4 mb-6 rounded";
+                banner.innerHTML = `
+                    <p class="text-blue-900 font-bold text-sm md:text-base mb-1 uppercase tracking-wider">Participant Registration</p>
+                    <p class="text-xs md:text-sm text-blue-800">Confirm your church details below, then fill in participant information for each category you registered for.</p>
+                `;
+            }
+        }
+
+        function checkDOBField(prefix, num) {
+            const dobEl = document.getElementById(`${prefix}Part${num}DOB`);
+            const hintEl = document.getElementById(`${prefix}Part${num}DOBHint`);
+            if (!dobEl || !hintEl) return;
+
+            const range = AGE_RANGES[prefix];
+
+            if (!dobEl.value) {
+                dobEl.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+                dobEl.classList.add('border-gray-300');
+                hintEl.textContent = `Age must be ${range.min}–${range.max} years as of Aug 29, 2026`;
+                hintEl.classList.remove('text-red-600', 'font-semibold');
+                hintEl.classList.add('text-gray-400');
+                return;
+            }
+
+            const age = calculateAgeOnContestDate(dobEl.value);
+
+            if (age < range.min || age > range.max) {
+                dobEl.classList.remove('border-gray-300');
+                dobEl.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+                hintEl.textContent = `⚠ Out of range — this participant will be ${age} years old on Aug 29, 2026 (allowed: ${range.min}–${range.max})`;
+                hintEl.classList.remove('text-gray-400');
+                hintEl.classList.add('text-red-600', 'font-semibold');
+            } else {
+                dobEl.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+                dobEl.classList.add('border-gray-300');
+                hintEl.textContent = `✓ Age ${age} — within the allowed range`;
+                hintEl.classList.remove('text-red-600', 'font-semibold');
+                hintEl.classList.add('text-green-600', 'font-semibold');
+            }
+        }
+
+        function validateParticipantAges() {
+            const errors = [];
+            ['junior', 'inter', 'senior'].forEach(prefix => {
+                const wrap = document.getElementById(`${prefix}SectionWrap`);
+                if (!wrap || wrap.classList.contains('hidden')) return; // category not ticked, skip
+
+                [1, 2].forEach(num => {
+                    const dobEl = document.getElementById(`${prefix}Part${num}DOB`);
+                    const nameEl = document.getElementById(`${prefix}Part${num}Name`);
+                    if (!dobEl || !dobEl.value) return; // no DOB entered, skip
+
+                    const age = calculateAgeOnContestDate(dobEl.value);
+                    const range = AGE_RANGES[prefix];
+                    if (age < range.min || age > range.max) {
+                        const pname = nameEl && nameEl.value ? nameEl.value : `Participant ${num}`;
+                        errors.push(`${pname} (${range.label}) will be ${age} years old on Aug 29, 2026 — outside the allowed range.`);
+                    }
+                });
+            });
+            return errors;
+        }
+
+        document.getElementById('participantsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const anyCategoryTicked = document.querySelectorAll('.pf-cat-checkbox:checked').length > 0;
+            if (!anyCategoryTicked) {
+                Swal.fire('No Category Selected', 'Please tick at least one category and fill in its participant details before submitting.', 'warning');
+                return;
+            }
+
+            const ageErrors = validateParticipantAges();
+            if (ageErrors.length > 0) {
+                Swal.fire({
+                    title: 'Age Requirement Not Met',
+                    html: `<div class="text-left text-sm text-gray-700">${ageErrors.map(err => `<p class="mb-2">⚠️ ${err}</p>`).join('')}</div>`,
+                    icon: 'error'
+                });
+                return;
+            }
+
+            const btn = document.getElementById('participantsSubmitBtn');
+            btn.disabled = true; btn.textContent = "Saving...";
+
+            const payload = {
+                username: localStorage.getItem("yetay_session_id"),
+                churchName: document.getElementById('pf-churchName').value,
+                churchAddress: document.getElementById('pf-churchAddress').value,
+                categories: currentCategories.join(", ")
+            };
+
+            const fieldIds = [
+                "juniorPart1Name","juniorPart1Gender","juniorPart1DOB","juniorPart1ParentName","juniorPart1ParentPhone",
+                "juniorPart2Name","juniorPart2Gender","juniorPart2DOB","juniorPart2ParentName","juniorPart2ParentPhone",
+                "juniorTeacherName","juniorTeacherPhone",
+                "interPart1Name","interPart1Gender","interPart1DOB","interPart1ParentName","interPart1ParentPhone",
+                "interPart2Name","interPart2Gender","interPart2DOB","interPart2ParentName","interPart2ParentPhone",
+                "interTeacherName","interTeacherPhone",
+                "seniorPart1Name","seniorPart1Gender","seniorPart1DOB","seniorPart1ParentName","seniorPart1ParentPhone",
+                "seniorPart2Name","seniorPart2Gender","seniorPart2DOB","seniorPart2ParentName","seniorPart2ParentPhone",
+                "seniorTeacherName","seniorTeacherPhone"
+            ];
+            fieldIds.forEach(id => {
+                const el = document.getElementById(id);
+                payload[id] = el ? el.value : "";
+            });
+
+            const params = new URLSearchParams();
+            params.append("action", "submitParticipants");
+            params.append("payload", JSON.stringify(payload));
+
+            try {
+                const resp = await fetch(scriptURL, { method: "POST", body: params });
+                const res = await resp.json();
+                if (res.success) {
+                    Swal.fire('Success!', 'Participant details saved.', 'success');
+                    setParticipantFormLocked(true);
+                }
+                else {
+                    Swal.fire('Editing Disabled', res.message || 'Something went wrong.', 'error');
+                    setParticipantFormLocked(true); // re-lock the form since the save was rejected
+                }
+            } catch (err) {
+                Swal.fire('Error', 'Network error. Please try again.', 'error');
+            }
+            btn.disabled = false; btn.textContent = "Save Participant Details";
         });
 
         // ================= PAST QUESTIONS HUB LOGIC =================

@@ -229,19 +229,29 @@
     <!-- ============ FULL-SCREEN: EXAM INTERFACE ============ -->
     <div id="screen-exam" class="hidden fixed top-[44px] md:top-[52px] left-0 right-0 bottom-0 z-[100] w-screen bg-slate-50 flex flex-col font-sans overflow-hidden">
         <!-- Exam header -->
-        <div class="bg-gradient-to-r from-blue-900 to-blue-800 text-white p-2 md:p-3 flex justify-between items-center shrink-0 shadow z-30 gap-2">
+        <div class="bg-gradient-to-r from-blue-900 to-blue-800 text-white p-2 md:p-3 flex justify-between items-center shrink-0 shadow z-30 gap-2 flex-wrap">
             <div class="flex items-center gap-2 md:gap-3 min-w-0">
-                <h3 class="font-black uppercase tracking-widest text-[10px] md:text-sm text-yellow-400 truncate" id="exam-header-title">Exam</h3>
+                <h3 class="font-black uppercase tracking-widest text-[9px] md:text-sm text-yellow-400 truncate hidden sm:block" id="exam-header-title">Exam</h3>
                 <button onclick="toggleExamGrid()" class="bg-white/10 hover:bg-white/20 border border-white/20 px-2 md:px-2.5 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition flex items-center shrink-0">
                     <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg> <span class="hidden sm:inline">Map</span>
                 </button>
+                <button onclick="toggleExamGuide()" id="exam-guide-btn" class="bg-yellow-500 hover:bg-yellow-400 border border-yellow-400 px-2 md:px-2.5 py-1.5 rounded-lg text-[10px] md:text-xs font-bold text-blue-900 transition flex items-center shrink-0">
+                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg> <span class="hidden sm:inline">Guide</span>
+                </button>
             </div>
-            <div class="flex items-center gap-2 md:gap-3 shrink-0">
-                <div class="bg-green-500/20 border border-green-400/50 text-green-200 px-2.5 md:px-3.5 py-1.5 rounded-full text-[11px] md:text-sm font-black tracking-wide flex items-center gap-1.5 transition-all" id="exam-answered-badge">
-                    <span class="w-2 h-2 rounded-full bg-green-400" id="exam-answered-dot"></span>
-                    <span id="exam-answered-count">0</span><span class="text-green-300/70">/<span id="exam-answered-total">0</span></span>
+            <div class="flex items-center gap-1.5 md:gap-2.5 shrink-0 flex-wrap justify-end">
+                <!-- Question number — always visible, high-contrast white pill -->
+                <div class="bg-white text-blue-900 px-2.5 md:px-3.5 py-1.5 rounded-full text-[12px] md:text-base font-black tracking-wide shadow-md flex items-center gap-1" id="exam-qnum-badge">
+                    <span class="text-[7px] md:text-[8px] uppercase text-slate-400 font-bold hidden sm:inline mr-0.5">Q</span>
+                    <span id="exam-header-qnum">1</span><span class="text-slate-300">/</span><span id="exam-header-qtotal">0</span>
                 </div>
-                <div class="bg-red-500/20 border border-red-500/50 text-red-100 px-3 md:px-4 py-1.5 rounded-full text-sm md:text-lg font-mono font-black tracking-widest transition-all" id="exam-timer">30:00</div>
+                <!-- Answered / Total — white pill, green accent -->
+                <div class="bg-white text-green-700 px-2.5 md:px-3.5 py-1.5 rounded-full text-[12px] md:text-base font-black tracking-wide flex items-center gap-1.5 shadow-md transition-all" id="exam-answered-badge">
+                    <span class="w-2 h-2 rounded-full bg-green-500 shrink-0" id="exam-answered-dot"></span>
+                    <span id="exam-answered-count">0</span><span class="text-slate-300">/</span><span id="exam-answered-total">0</span>
+                </div>
+                <!-- Timer — white pill, color shifts as time runs low -->
+                <div class="bg-white px-3 md:px-4 py-1.5 rounded-full text-base md:text-xl font-mono font-black tracking-widest shadow-md transition-all" id="exam-timer">30:00</div>
             </div>
         </div>
 
@@ -274,6 +284,12 @@
                 <button onclick="navExam(1)" id="exam-next-btn" class="bg-blue-900 text-white font-black px-4 md:px-7 py-2.5 md:py-3 rounded-xl hover:bg-blue-800 active:scale-95 transition disabled:opacity-30 text-sm md:text-base shadow-md">Next &rarr;</button>
                 <button onclick="submitExam()" id="exam-submit-btn" class="bg-yellow-500 text-blue-900 font-black px-4 md:px-7 py-2.5 md:py-3 rounded-xl hover:bg-yellow-400 active:scale-95 transition-all text-sm md:text-base shadow-md ring-2 ring-yellow-300/50">Submit</button>
             </div>
+        </div>
+
+        <!-- Exam Guide Image Overlay -->
+        <div id="exam-guide-overlay" class="hidden fixed inset-0 z-[110] bg-black/90 flex items-center justify-center p-3 md:p-6">
+            <button onclick="toggleExamGuide()" class="absolute top-3 right-3 md:top-5 md:right-5 bg-white/10 hover:bg-white/20 border border-white/30 text-white w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center font-black text-lg transition">✕</button>
+            <img src="cbt_guide.png" alt="How to use the exam screen" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
         </div>
     </div>
 
@@ -562,14 +578,14 @@
                 const seconds = totalSeconds % 60;
                 display.textContent = String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
 
-                // Dynamic color cues as time runs low
-                display.classList.remove('bg-red-500/20','border-red-500/50','text-red-100','bg-yellow-500/20','border-yellow-400/60','text-yellow-100','animate-pulse');
+                // Dynamic color cues as time runs low — white pill stays constant, text/ring color signals urgency
+                display.classList.remove('text-blue-900','text-yellow-600','text-red-600','ring-2','ring-red-300','animate-pulse');
                 if (totalSeconds <= 60) {
-                    display.classList.add('bg-red-500/30','border-red-400','text-red-100','animate-pulse');
+                    display.classList.add('text-red-600','ring-2','ring-red-300','animate-pulse');
                 } else if (totalSeconds <= 300) {
-                    display.classList.add('bg-yellow-500/20','border-yellow-400/60','text-yellow-100');
+                    display.classList.add('text-yellow-600');
                 } else {
-                    display.classList.add('bg-red-500/20','border-red-500/50','text-red-100');
+                    display.classList.add('text-blue-900');
                 }
             }
 
@@ -596,10 +612,10 @@
             setTimeout(() => badge.classList.remove('scale-110'), 200);
 
             if (answered === total) {
-                badge.classList.add('ring-2','ring-green-300');
+                badge.classList.add('ring-2','ring-green-400');
                 dot.classList.add('animate-pulse');
             } else {
-                badge.classList.remove('ring-2','ring-green-300');
+                badge.classList.remove('ring-2','ring-green-400');
                 dot.classList.remove('animate-pulse');
             }
         }
@@ -706,6 +722,20 @@
             const progressEl = document.getElementById('exam-progress');
             if (progressEl) progressEl.innerText = `${examCurrentIndex + 1} / ${examQuestions.length}`;
 
+            const qnumEl = document.getElementById('exam-header-qnum');
+            const qtotalEl = document.getElementById('exam-header-qtotal');
+            if (qnumEl) qnumEl.textContent = examCurrentIndex + 1;
+            if (qtotalEl) qtotalEl.textContent = examQuestions.length;
+
+            // Brief pulse on the question badge so a jump/nav is noticeable
+            const qBadge = document.getElementById('exam-qnum-badge');
+            if (qBadge) {
+                qBadge.classList.remove('scale-110');
+                void qBadge.offsetWidth;
+                qBadge.classList.add('scale-110');
+                setTimeout(() => qBadge.classList.remove('scale-110'), 200);
+            }
+
             document.getElementById('exam-prev-btn').disabled = examCurrentIndex === 0;
             document.getElementById('exam-next-btn').disabled = examCurrentIndex === examQuestions.length - 1;
 
@@ -762,6 +792,10 @@
             const sidebar = document.getElementById('exam-grid-sidebar');
             if (sidebar.classList.contains('hidden')) { sidebar.classList.remove('hidden'); sidebar.classList.add('flex'); }
             else { sidebar.classList.add('hidden'); sidebar.classList.remove('flex'); }
+        }
+
+        function toggleExamGuide() {
+            document.getElementById('exam-guide-overlay').classList.toggle('hidden');
         }
 
         // Record answer locally AND push to backend immediately

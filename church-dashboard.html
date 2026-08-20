@@ -874,11 +874,12 @@
             const btn = document.getElementById('participantsSubmitBtn');
             btn.disabled = true; btn.textContent = "Saving...";
 
+            const checkedCats = Array.from(document.querySelectorAll('.pf-cat-checkbox:checked')).map(cb => cb.value);
             const payload = {
                 username: localStorage.getItem("yetay_session_id"),
                 churchName: document.getElementById('pf-churchName').value,
                 churchAddress: document.getElementById('pf-churchAddress').value,
-                categories: currentCategories.join(", ")
+                categories: checkedCats.join(", ")
             };
 
             const fieldIds = [
